@@ -343,6 +343,43 @@ button {
     color: #777;
 }
 
+
+/* CREATE PLAYLIST */
+
+.playlist-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.playlist-heading h2 {
+    margin: 0;
+}
+
+.create-playlist-button {
+    border: none;
+    background: white;
+    color: black;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.create-playlist-button:hover {
+    transform: scale(1.03);
+}
+
+.create-playlist-card .card-cover {
+    background: #202024;
+    font-size: 48px;
+}
+
+.create-playlist-card:hover .card-cover {
+    background: #29292d;
+}
+
 /* PLAYER */
 
 .player {
@@ -568,6 +605,8 @@ button {
     .section { margin-bottom:32px; }
     .section-header { margin-bottom:13px; }
     .section h2 { font-size:19px; }
+    .playlist-heading { gap:8px; min-width:0; }
+    .create-playlist-button { padding:7px 10px; font-size:10px; white-space:nowrap; }
     .see-all { font-size:12px; }
 
     .song-list { border-radius:13px; background:#111113; }
@@ -1004,7 +1043,18 @@ button {
 
             <div class="section-header">
 
-                <h2>Your Playlists</h2>
+                <div class="playlist-heading">
+
+                    <h2>Your Playlists</h2>
+
+                    <button
+                        class="create-playlist-button"
+                        onclick="openCreatePlaylist()"
+                    >
+                        + Create Playlist
+                    </button>
+
+                </div>
 
                 <span
                     class="see-all"
@@ -1016,6 +1066,26 @@ button {
             </div>
 
             <div class="cards">
+
+                <div
+                    class="card create-playlist-card"
+                    onclick="openCreatePlaylist()"
+                >
+
+                    <div class="card-cover">
+                        +
+                    </div>
+
+                    <div class="card-title">
+                        Create Playlist
+                    </div>
+
+                    <div class="card-subtitle">
+                        Make your own collection
+                    </div>
+
+                </div>
+
 
                 <div
                     class="card"
@@ -1343,6 +1413,35 @@ function openSignup() {
             </button>
 
         </div>
+
+    `;
+
+    document.getElementById("popupBackground").style.display = "flex";
+
+}
+
+
+function openCreatePlaylist() {
+
+    document.getElementById("popupContent").innerHTML = `
+
+        <h2>Create a playlist</h2>
+
+        <p>
+            Give your new playlist a name.
+        </p>
+
+        <input
+            type="text"
+            placeholder="Playlist name"
+        >
+
+        <button
+            class="popup-submit"
+            onclick="showMessage('Create playlist')"
+        >
+            Create Playlist
+        </button>
 
     `;
 
