@@ -526,58 +526,126 @@ button {
     cursor: pointer;
 }
 
-/* MOBILE */
+/* MOBILE APP LAYOUT */
+@media (max-width: 800px) {
+    body { background:#09090b; overflow-x:hidden; }
+    .app { display:block; min-height:100vh; padding-bottom:142px; }
+    .sidebar { display:none; }
+    .main { margin-left:0; width:100%; padding:0 16px 30px; }
 
-@media(max-width: 800px) {
-
-    .sidebar {
-        display: none;
+    .topbar {
+        position:sticky; top:0; z-index:50; margin:0 -16px 18px;
+        padding:14px 16px 12px; background:rgba(9,9,11,.94);
+        backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+        display:grid; grid-template-columns:1fr auto; gap:10px;
     }
-
-    .main {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
+    .search {
+        grid-column:1 / -1; grid-row:2; width:100%; height:44px;
+        border-radius:13px; padding:0 15px; font-size:14px;
+        background:#18181b; border-color:#29292d;
     }
+    .account-buttons { justify-content:flex-end; gap:6px; }
+    .sign-in,.create-account { padding:8px 11px; font-size:12px; white-space:nowrap; }
 
     .feature {
-        grid-template-columns: 1fr;
+        display:flex; flex-direction:column; gap:18px; padding:18px;
+        margin-bottom:30px; border-radius:18px;
+        background:linear-gradient(145deg,#1b1b1f,#111113);
     }
-
     .feature-cover {
-        width: 200px;
-        height: 200px;
+        width:100%; height:auto; aspect-ratio:1/1;
+        border-radius:12px; font-size:70px; background:#29292d;
     }
+    .feature-info {
+        display:grid; grid-template-columns:1fr auto; align-items:end;
+        gap:6px 14px;
+    }
+    .small-label { grid-column:1 / -1; font-size:10px; }
+    .feature h1 { font-size:25px; line-height:1.15; margin:0; }
+    .feature p { grid-column:1; margin:0; font-size:13px; line-height:1.4; }
+    .play-button { grid-column:2; grid-row:2 / span 2; width:52px; height:52px; }
 
+    .section { margin-bottom:32px; }
+    .section-header { margin-bottom:13px; }
+    .section h2 { font-size:19px; }
+    .see-all { font-size:12px; }
+
+    .song-list { border-radius:13px; background:#111113; }
     .song {
-        grid-template-columns: 40px 50px 1fr 45px;
+        grid-template-columns:46px 1fr auto; gap:11px;
+        padding:11px 12px; min-height:68px;
     }
+    .song-number,.song-album { display:none; }
+    .song-cover { width:46px; height:46px; border-radius:7px; }
+    .song-title {
+        font-size:14px; margin-bottom:4px; white-space:nowrap;
+        overflow:hidden; text-overflow:ellipsis;
+    }
+    .song-artist { font-size:12px; }
+    .song-time { font-size:11px; }
 
-    .song-album {
-        display: none;
+    .cards {
+        display:flex; overflow-x:auto; gap:12px; margin:0 -16px;
+        padding:2px 16px 7px; scroll-snap-type:x mandatory;
+        scrollbar-width:none;
     }
+    .cards::-webkit-scrollbar { display:none; }
+    .card {
+        flex:0 0 145px; width:145px; padding:10px;
+        border-radius:12px; scroll-snap-align:start;
+    }
+    .card-cover { border-radius:8px; margin-bottom:10px; font-size:38px; }
+    .card-title,.card-subtitle { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .player {
-        grid-template-columns: 1fr 1fr;
+        left:10px; right:10px; bottom:67px; width:auto; height:64px;
+        border:1px solid #303035; border-radius:14px; padding:7px 10px;
+        display:grid; grid-template-columns:1fr auto;
+        box-shadow:0 10px 35px rgba(0,0,0,.45);
+        background:rgba(24,24,27,.97); backdrop-filter:blur(18px);
     }
+    .now-playing { min-width:0; gap:9px; }
+    .now-cover { width:46px; height:46px; border-radius:7px; flex-shrink:0; }
+    .now-title,.now-artist { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .now-title { font-size:12px; }
+    .now-artist { font-size:10px; }
+    .player > div:nth-child(2) { display:flex; align-items:center; }
+    .controls { gap:7px; }
+    .control { font-size:15px; width:30px; height:30px; padding:0; }
+    .control-main { width:39px; height:39px; }
+    .progress-area { position:absolute; left:10px; right:10px; bottom:2px; gap:0; }
+    .progress-area span { display:none; }
+    .progress { height:2px; }
+    .volume { display:none; }
 
-    .volume {
-        display: none;
+    .mobile-nav {
+        position:fixed; display:flex; left:0; right:0; bottom:0; height:67px;
+        z-index:110; background:rgba(17,17,19,.97);
+        border-top:1px solid #29292d;
+        padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+        backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
     }
+    .mobile-nav a {
+        flex:1; display:flex; flex-direction:column; align-items:center;
+        justify-content:center; gap:3px; color:#777; text-decoration:none;
+        font-size:10px; border-radius:10px;
+    }
+    .mobile-nav a.active { color:white; }
+    .mobile-nav .mobile-icon { font-size:20px; line-height:20px; }
 
-    .search {
-        width: 180px;
+    .popup-background { align-items:flex-end; padding:0; }
+    .popup {
+        width:100%; max-width:none; border-radius:20px 20px 0 0;
+        padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+        border-bottom:none;
     }
-
-    .account-buttons {
-        gap: 5px;
-    }
-
-    .sign-in,
-    .create-account {
-        padding: 8px 10px;
-    }
+    .popup h2 { font-size:22px; }
+    .popup input { height:48px; font-size:16px; }
+    .popup-submit { height:48px; font-size:14px; }
 }
+
+.mobile-nav { display:none; }
+@media (max-width:800px) { .mobile-nav { display:flex; } }
 
 </style>
 </head>
@@ -1015,6 +1083,24 @@ button {
     </main>
 
 </div>
+
+
+<!-- MOBILE NAVIGATION -->
+
+<nav class="mobile-nav">
+    <a href="#" class="active" onclick="return showMessage('Home')">
+        <span class="mobile-icon">⌂</span><span>Home</span>
+    </a>
+    <a href="#" onclick="return showMessage('Songs')">
+        <span class="mobile-icon">♪</span><span>Songs</span>
+    </a>
+    <a href="#" onclick="return showMessage('Favorites')">
+        <span class="mobile-icon">♡</span><span>Favorites</span>
+    </a>
+    <a href="#" onclick="return showMessage('Library')">
+        <span class="mobile-icon">▣</span><span>Library</span>
+    </a>
+</nav>
 
 
 <!-- MUSIC PLAYER -->
