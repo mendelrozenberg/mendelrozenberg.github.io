@@ -19,15 +19,17 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+button {
+    font-family: inherit;
+}
+
 .app {
     display: flex;
     min-height: 100vh;
     padding-bottom: 82px;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar {
     width: 230px;
@@ -44,10 +46,6 @@ body {
     font-size: 21px;
     font-weight: bold;
     padding: 5px 12px 30px;
-}
-
-.logo span {
-    font-size: 25px;
 }
 
 .menu-title {
@@ -86,9 +84,7 @@ body {
     text-align: center;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main {
     margin-left: 230px;
@@ -96,9 +92,7 @@ body {
     padding: 25px 35px;
 }
 
-/* =========================
-   TOP BAR
-========================= */
+/* TOP BAR */
 
 .topbar {
     display: flex;
@@ -121,17 +115,41 @@ body {
     color: #777;
 }
 
-.profile {
-    background: #1b1b1f;
-    border-radius: 20px;
-    padding: 8px 15px;
-    font-size: 13px;
-    color: #ccc;
+.account-buttons {
+    display: flex;
+    gap: 8px;
 }
 
-/* =========================
-   FEATURED
-========================= */
+.sign-in,
+.create-account {
+    border-radius: 20px;
+    padding: 9px 16px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.sign-in {
+    background: #1b1b1f;
+    border: 1px solid #29292d;
+    color: #ddd;
+}
+
+.create-account {
+    background: white;
+    border: none;
+    color: black;
+    font-weight: bold;
+}
+
+.sign-in:hover {
+    background: #29292d;
+}
+
+.create-account:hover {
+    transform: scale(1.03);
+}
+
+/* FEATURE */
 
 .feature {
     display: grid;
@@ -192,9 +210,7 @@ body {
     transform: scale(1.05);
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/* SECTIONS */
 
 .section {
     margin-bottom: 42px;
@@ -215,11 +231,14 @@ body {
 .see-all {
     color: #888;
     font-size: 13px;
+    cursor: pointer;
 }
 
-/* =========================
-   SONG ROW
-========================= */
+.see-all:hover {
+    color: white;
+}
+
+/* SONGS */
 
 .song-list {
     background: #111113;
@@ -234,6 +253,7 @@ body {
     gap: 12px;
     padding: 10px 15px;
     border-bottom: 1px solid #1d1d20;
+    cursor: pointer;
 }
 
 .song:last-child {
@@ -280,9 +300,7 @@ body {
     text-align: right;
 }
 
-/* =========================
-   CARDS
-========================= */
+/* CARDS */
 
 .cards {
     display: grid;
@@ -299,6 +317,7 @@ body {
 
 .card:hover {
     background: #1c1c20;
+    transform: translateY(-2px);
 }
 
 .card-cover {
@@ -324,9 +343,7 @@ body {
     color: #777;
 }
 
-/* =========================
-   PLAYER
-========================= */
+/* PLAYER */
 
 .player {
     position: fixed;
@@ -411,7 +428,7 @@ body {
 }
 
 .progress-fill {
-    width: 25%;
+    width: 0%;
     height: 100%;
     background: white;
 }
@@ -422,9 +439,94 @@ body {
     color: #777;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* POPUP */
+
+.popup-background {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+}
+
+.popup {
+    width: 380px;
+    max-width: 90%;
+    background: #18181b;
+    border: 1px solid #303035;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.popup h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.popup p {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+.popup input {
+    width: 100%;
+    background: #101012;
+    border: 1px solid #303035;
+    border-radius: 7px;
+    padding: 12px;
+    color: white;
+    margin-bottom: 12px;
+    outline: none;
+}
+
+.popup input:focus {
+    border-color: #666;
+}
+
+.popup-submit {
+    width: 100%;
+    border: none;
+    background: white;
+    color: black;
+    padding: 12px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.close-popup {
+    float: right;
+    border: none;
+    background: none;
+    color: #888;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-popup:hover {
+    color: white;
+}
+
+.switch-popup {
+    text-align: center;
+    margin-top: 18px;
+    color: #777;
+    font-size: 12px;
+}
+
+.switch-popup button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* MOBILE */
 
 @media(max-width: 800px) {
 
@@ -467,6 +569,14 @@ body {
         width: 180px;
     }
 
+    .account-buttons {
+        gap: 5px;
+    }
+
+    .sign-in,
+    .create-account {
+        padding: 8px 10px;
+    }
 }
 
 </style>
@@ -490,28 +600,27 @@ body {
 
         <div class="nav">
 
-            <a href="#" class="active">
+            <a href="#" class="active" onclick="return showMessage('Home')">
                 <span class="icon">⌂</span>
                 Home
             </a>
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Songs')">
                 <span class="icon">♪</span>
                 Songs
             </a>
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Artists')">
                 <span class="icon">●</span>
                 Artists
             </a>
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Albums')">
                 <span class="icon">▣</span>
                 Albums
             </a>
 
         </div>
-
 
         <div class="menu-title">
             Your Music
@@ -519,17 +628,17 @@ body {
 
         <div class="nav">
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Favorites')">
                 <span class="icon">♡</span>
                 Favorites
             </a>
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Playlists')">
                 <span class="icon">☷</span>
                 Playlists
             </a>
 
-            <a href="#">
+            <a href="#" onclick="return showMessage('Recently Played')">
                 <span class="icon">↺</span>
                 Recently Played
             </a>
@@ -547,11 +656,27 @@ body {
 
             <input
                 class="search"
+                id="searchBox"
+                oninput="searchSongs()"
                 placeholder="Search niggunim, artists, albums..."
             >
 
-            <div class="profile">
-                Sign in
+            <div class="account-buttons">
+
+                <button
+                    class="sign-in"
+                    onclick="openLogin()"
+                >
+                    Sign in
+                </button>
+
+                <button
+                    class="create-account"
+                    onclick="openSignup()"
+                >
+                    Create account
+                </button>
+
             </div>
 
         </div>
@@ -597,23 +722,27 @@ body {
 
                 <h2>Recently Played</h2>
 
-                <span class="see-all">
+                <span
+                    class="see-all"
+                    onclick="showMessage('All recently played songs')"
+                >
                     See all
                 </span>
 
             </div>
 
+            <div class="song-list" id="songList">
 
-            <div class="song-list">
-
-                <div class="song">
+                <div
+                    class="song"
+                    onclick="playSong('Sample Niggun')"
+                >
 
                     <div class="song-number">1</div>
 
                     <div class="song-cover">🎵</div>
 
                     <div>
-
                         <div class="song-title">
                             Sample Niggun
                         </div>
@@ -621,7 +750,6 @@ body {
                         <div class="song-artist">
                             Chabad Niggunim
                         </div>
-
                     </div>
 
                     <div class="song-album">
@@ -635,14 +763,16 @@ body {
                 </div>
 
 
-                <div class="song">
+                <div
+                    class="song"
+                    onclick="playSong('Traditional Niggun')"
+                >
 
                     <div class="song-number">2</div>
 
                     <div class="song-cover">🎶</div>
 
                     <div>
-
                         <div class="song-title">
                             Traditional Niggun
                         </div>
@@ -650,7 +780,6 @@ body {
                         <div class="song-artist">
                             Chabad Collection
                         </div>
-
                     </div>
 
                     <div class="song-album">
@@ -664,14 +793,16 @@ body {
                 </div>
 
 
-                <div class="song">
+                <div
+                    class="song"
+                    onclick="playSong('Shabbos Niggun')"
+                >
 
                     <div class="song-number">3</div>
 
                     <div class="song-cover">🕯️</div>
 
                     <div>
-
                         <div class="song-title">
                             Shabbos Niggun
                         </div>
@@ -679,7 +810,6 @@ body {
                         <div class="song-artist">
                             Shabbos Collection
                         </div>
-
                     </div>
 
                     <div class="song-album">
@@ -705,16 +835,21 @@ body {
 
                 <h2>Albums</h2>
 
-                <span class="see-all">
+                <span
+                    class="see-all"
+                    onclick="showMessage('All albums')"
+                >
                     See all
                 </span>
 
             </div>
 
-
             <div class="cards">
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Chabad Classics')"
+                >
 
                     <div class="card-cover">
                         💿
@@ -731,7 +866,10 @@ body {
                 </div>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Niggunim of the Rebbeim')"
+                >
 
                     <div class="card-cover">
                         🎼
@@ -748,7 +886,10 @@ body {
                 </div>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Shabbos Niggunim')"
+                >
 
                     <div class="card-cover">
                         🕯️
@@ -765,7 +906,10 @@ body {
                 </div>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Farbrengen')"
+                >
 
                     <div class="card-cover">
                         🎵
@@ -794,16 +938,21 @@ body {
 
                 <h2>Your Playlists</h2>
 
-                <span class="see-all">
+                <span
+                    class="see-all"
+                    onclick="showMessage('All playlists')"
+                >
                     See all
                 </span>
 
             </div>
 
-
             <div class="cards">
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Farbrengen playlist')"
+                >
 
                     <div class="card-cover">
                         🔥
@@ -820,7 +969,10 @@ body {
                 </div>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Shabbos playlist')"
+                >
 
                     <div class="card-cover">
                         🕯️
@@ -837,7 +989,10 @@ body {
                 </div>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                    onclick="showMessage('Favorites playlist')"
+                >
 
                     <div class="card-cover">
                         ❤️
@@ -894,7 +1049,10 @@ body {
 
         <div class="controls">
 
-            <button class="control">
+            <button
+                class="control"
+                onclick="showMessage('Previous song')"
+            >
                 ↶
             </button>
 
@@ -906,7 +1064,10 @@ body {
                 ▶
             </button>
 
-            <button class="control">
+            <button
+                class="control"
+                onclick="showMessage('Next song')"
+            >
                 ↷
             </button>
 
@@ -915,17 +1076,23 @@ body {
 
         <div class="progress-area">
 
-            <span style="font-size:10px;color:#666;">
+            <span
+                id="currentTime"
+                style="font-size:10px;color:#666;"
+            >
                 0:00
             </span>
 
             <div class="progress">
-
-                <div class="progress-fill"></div>
-
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
             </div>
 
-            <span style="font-size:10px;color:#666;">
+            <span
+                style="font-size:10px;color:#666;"
+            >
                 0:00
             </span>
 
@@ -941,9 +1108,35 @@ body {
 </div>
 
 
+<!-- LOGIN / SIGNUP POPUP -->
+
+<div
+    class="popup-background"
+    id="popupBackground"
+>
+
+    <div class="popup">
+
+        <button
+            class="close-popup"
+            onclick="closePopup()"
+        >
+            ×
+        </button>
+
+        <div id="popupContent"></div>
+
+    </div>
+
+</div>
+
+
 <script>
 
 let playing = false;
+
+
+/* MUSIC */
 
 function playSong(name) {
 
@@ -953,7 +1146,10 @@ function playSong(name) {
 
     document.getElementById("mainPlay").textContent = "❚❚";
 
+    document.getElementById("progressFill").style.width = "25%";
+
 }
+
 
 function togglePlay() {
 
@@ -972,6 +1168,178 @@ function togglePlay() {
     }
 
 }
+
+
+/* ACCOUNT POPUPS */
+
+function openLogin() {
+
+    document.getElementById("popupContent").innerHTML = `
+
+        <h2>Welcome back</h2>
+
+        <p>
+            Sign in to your NigguneiChabad account.
+        </p>
+
+        <input
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="popup-submit"
+            onclick="fakeLogin()"
+        >
+            Sign in
+        </button>
+
+        <div class="switch-popup">
+
+            Don't have an account?
+
+            <button onclick="openSignup()">
+                Create one
+            </button>
+
+        </div>
+
+    `;
+
+    document.getElementById("popupBackground").style.display = "flex";
+
+}
+
+
+function openSignup() {
+
+    document.getElementById("popupContent").innerHTML = `
+
+        <h2>Create your account</h2>
+
+        <p>
+            Join NigguneiChabad and build your personal music library.
+        </p>
+
+        <input
+            type="text"
+            placeholder="Your name"
+        >
+
+        <input
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="popup-submit"
+            onclick="fakeSignup()"
+        >
+            Create account
+        </button>
+
+        <div class="switch-popup">
+
+            Already have an account?
+
+            <button onclick="openLogin()">
+                Sign in
+            </button>
+
+        </div>
+
+    `;
+
+    document.getElementById("popupBackground").style.display = "flex";
+
+}
+
+
+function closePopup() {
+
+    document.getElementById("popupBackground").style.display = "none";
+
+}
+
+
+function fakeLogin() {
+
+    alert("The login screen works! We will connect it to real accounts later.");
+
+}
+
+
+function fakeSignup() {
+
+    alert("The signup screen works! We will connect it to real accounts later.");
+
+}
+
+
+/* SEARCH */
+
+function searchSongs() {
+
+    let search =
+        document.getElementById("searchBox").value.toLowerCase();
+
+    let songs =
+        document.querySelectorAll(".song");
+
+    songs.forEach(function(song) {
+
+        let text =
+            song.textContent.toLowerCase();
+
+        if (text.includes(search)) {
+
+            song.style.display = "grid";
+
+        } else {
+
+            song.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* SIDEBAR */
+
+function showMessage(message) {
+
+    alert(message + " will be built next!");
+
+    return false;
+
+}
+
+
+/* CLOSE POPUP WHEN CLICKING OUTSIDE */
+
+document
+    .getElementById("popupBackground")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closePopup();
+
+        }
+
+    });
 
 </script>
 
