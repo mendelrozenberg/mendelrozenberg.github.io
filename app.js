@@ -1,999 +1,2370 @@
-"use strict";
+/* =========================================================
+   DATA
+========================================================= */
 
-/* ---------------------------------------
-   NIGGUNEICHABAD
-   Main website functionality
---------------------------------------- */
+const artists = [
+
+  {
+    id:"fried",
+    name:"Avraham Fried",
+    image:"",
+    albums:["fried1","fried2"]
+  },
+
+  {
+    id:"benny",
+    name:"Benny Friedman",
+    image:"",
+    albums:["benny1"]
+  },
+
+  {
+    id:"shulem",
+    name:"Shulem Lemmer",
+    image:"",
+    albums:["shulem1"]
+  },
+
+  {
+    id:"shwekey",
+    name:"Yaakov Shwekey",
+    image:"",
+    albums:["shwekey1"]
+  },
+
+  {
+    id:"motti",
+    name:"Motti Steinmetz",
+    image:"",
+    albums:["motti1"]
+  },
+
+  {
+    id:"michoel",
+    name:"Michoel Schnitzler",
+    image:"",
+    albums:["michoel1"]
+  },
+
+  {
+    id:"dovid",
+    name:"Dovid Dachs",
+    image:"",
+    albums:["dovid1"]
+  },
+
+  {
+    id:"eitan",
+    name:"Eitan Katz",
+    image:"",
+    albums:["eitan1"]
+  }
+
+];
+
+const albums = [
+
+  {
+    id:"fried1",
+    title:"Avraham Fried Classics",
+    artistId:"fried",
+    image:"",
+    songs:[0,4]
+  },
+
+  {
+    id:"fried2",
+    title:"Chassidic Favorites",
+    artistId:"fried",
+    image:"",
+    songs:[6,8]
+  },
+
+  {
+    id:"benny1",
+    title:"Benny Friedman",
+    artistId:"benny",
+    image:"",
+    songs:[2,10]
+  },
+
+  {
+    id:"shulem1",
+    title:"Shulem Lemmer",
+    artistId:"shulem",
+    image:"",
+    songs:[1,5]
+  },
+
+  {
+    id:"shwekey1",
+    title:"Yaakov Shwekey",
+    artistId:"shwekey",
+    image:"",
+    songs:[3,9]
+  },
+
+  {
+    id:"motti1",
+    title:"Motti Steinmetz",
+    artistId:"motti",
+    image:"",
+    songs:[7]
+  },
+
+  {
+    id:"michoel1",
+    title:"Michoel Schnitzler",
+    artistId:"michoel",
+    image:"",
+    songs:[11]
+  },
+
+  {
+    id:"dovid1",
+    title:"Dovid Dachs",
+    artistId:"dovid",
+    image:"",
+    songs:[0,6]
+  },
+
+  {
+    id:"eitan1",
+    title:"Eitan Katz",
+    artistId:"eitan",
+    image:"",
+    songs:[4,10]
+  }
+
+];
 
 const songs = [
-  { id: 1, title: "Tzama Lecha Nafshi", artist: "Chabad Niggunim", composer: "Traditional", category: "Deep Niggunim", audio: "" },
-  { id: 2, title: "Daled Bavos", artist: "Chabad Niggunim", composer: "Traditional", category: "Chabad Classics", audio: "" },
-  { id: 3, title: "Keili Ata", artist: "Chabad Niggunim", composer: "Traditional", category: "Davening", audio: "" },
-  { id: 4, title: "Rachamana D'onei", artist: "Chabad Niggunim", composer: "Traditional", category: "Farbrengen", audio: "" },
-  { id: 5, title: "Shamil", artist: "Chabad Niggunim", composer: "Traditional", category: "Chabad Classics", audio: "" },
-  { id: 6, title: "Nyet Nyet Nikavo", artist: "Chabad Niggunim", composer: "Traditional", category: "Freilach", audio: "" },
-  { id: 7, title: "Hu Elokeinu", artist: "Chabad Niggunim", composer: "Traditional", category: "Davening", audio: "" },
-  { id: 8, title: "Tzomo Lecho Nafshi", artist: "Chabad Niggunim", composer: "Traditional", category: "Deep Niggunim", audio: "" },
-  { id: 9, title: "Ani Maamin", artist: "Chabad Niggunim", composer: "Traditional", category: "Emotional", audio: "" },
-  { id: 10, title: "Ki Anu Amecha", artist: "Chabad Niggunim", composer: "Traditional", category: "Davening", audio: "" },
-  { id: 11, title: "Utzu Eitza", artist: "Chabad Niggunim", composer: "Traditional", category: "Chabad Classics", audio: "" },
-  { id: 12, title: "V'Hi She'amda", artist: "Chabad Niggunim", composer: "Traditional", category: "Emotional", audio: "" },
-  { id: 13, title: "Hoshia Es Amecha", artist: "Chabad Niggunim", composer: "Traditional", category: "Farbrengen", audio: "" },
-  { id: 14, title: "Simcha Niggun", artist: "Chabad Niggunim", composer: "Traditional", category: "Freilach", audio: "" },
-  { id: 15, title: "Niggun Hisvaadus", artist: "Chabad Niggunim", composer: "Traditional", category: "Farbrengen", audio: "" },
-  { id: 16, title: "Lchaim Velivracha", artist: "Chabad Niggunim", composer: "Traditional", category: "Freilach", audio: "" },
-  { id: 17, title: "Avinu Malkeinu", artist: "Chabad Niggunim", composer: "Traditional", category: "Davening", audio: "" },
-  { id: 18, title: "Tzama Lecha Nafshi (Live)", artist: "Chabad Niggunim", composer: "Traditional", category: "Deep Niggunim", audio: "" }
+
+  {
+    id:"song0",
+    title:"Tzomah Nafshi",
+    artistId:"fried",
+    composerId:"alter",
+    albumId:"fried1",
+    initials:"TN",
+    image:""
+  },
+
+  {
+    id:"song1",
+    title:"Dalet Bavos",
+    artistId:"shulem",
+    composerId:"alter",
+    albumId:"shulem1",
+    initials:"DB",
+    image:""
+  },
+
+  {
+    id:"song2",
+    title:"Rosh Chodesh Kislev",
+    artistId:"benny",
+    composerId:"rashab",
+    albumId:"benny1",
+    initials:"RK",
+    image:""
+  },
+
+  {
+    id:"song3",
+    title:"Hachana",
+    artistId:"shwekey",
+    composerId:"frierdiker",
+    albumId:"shwekey1",
+    initials:"HA",
+    image:""
+  },
+
+  {
+    id:"song4",
+    title:"Niggun Simcha",
+    artistId:"fried",
+    composerId:"chassidim",
+    albumId:"fried1",
+    initials:"NS",
+    image:""
+  },
+
+  {
+    id:"song5",
+    title:"Yechidus",
+    artistId:"shulem",
+    composerId:"alter",
+    albumId:"shulem1",
+    initials:"YE",
+    image:""
+  },
+
+  {
+    id:"song6",
+    title:"Hu Elokeinu",
+    artistId:"fried",
+    composerId:"alter",
+    albumId:"fried2",
+    initials:"HE",
+    image:""
+  },
+
+  {
+    id:"song7",
+    title:"Four Bavos",
+    artistId:"motti",
+    composerId:"alter",
+    albumId:"motti1",
+    initials:"FB",
+    image:""
+  },
+
+  {
+    id:"song8",
+    title:"Niggun Hachana",
+    artistId:"fried",
+    composerId:"rashab",
+    albumId:"fried2",
+    initials:"NH",
+    image:""
+  },
+
+  {
+    id:"song9",
+    title:"Rosh Chodesh",
+    artistId:"shwekey",
+    composerId:"rashab",
+    albumId:"shwekey1",
+    initials:"RC",
+    image:""
+  },
+
+  {
+    id:"song10",
+    title:"Dveikus",
+    artistId:"benny",
+    composerId:"chassidim",
+    albumId:"benny1",
+    initials:"DV",
+    image:""
+  },
+
+  {
+    id:"song11",
+    title:"Simcha",
+    artistId:"michoel",
+    composerId:"frierdiker",
+    albumId:"michoel1",
+    initials:"SI",
+    image:""
+  }
+
 ];
 
 const composers = [
-  "Alter Rebbe",
-  "Mitteler Rebbe",
-  "Tzemach Tzedek",
-  "Rebbe Maharash",
-  "Rebbe Rashab",
-  "Frierdiker Rebbe",
-  "Lubavitcher Rebbe"
-];
 
-const singers = [
-  "Avraham Fried",
-  "Yossi Green",
-  "Shulem Lemmer",
-  "Benny Friedman",
-  "Yeedle",
-  "Mordechai Ben David",
-  "Chabad Choir"
-];
+  {
+    id:"alter",
+    name:"Alter Rebbe",
+    initials:"AR"
+  },
 
-const categories = [
-  "Chabad Classics",
-  "Deep Niggunim",
-  "Farbrengen",
-  "Freilach",
-  "Davening",
-  "Emotional",
-  "Niggunim of the Rebbe",
-  "Traditional"
+  {
+    id:"maharash",
+    name:"Rebbe Maharash",
+    initials:"RM"
+  },
+
+  {
+    id:"rashab",
+    name:"Rebbe Rashab",
+    initials:"RR"
+  },
+
+  {
+    id:"frierdiker",
+    name:"Frierdiker Rebbe",
+    initials:"FR"
+  },
+
+  {
+    id:"rebbe",
+    name:"The Rebbe",
+    initials:"TR"
+  },
+
+  {
+    id:"chassidim",
+    name:"Chabad Chassidim",
+    initials:"CC"
+  }
+
 ];
 
 const officialPlaylists = [
-  "Niggunim of the Rebbe",
-  "Farbrengen Favorites",
-  "Chabad Classics",
-  "Deep Niggunim"
+
+  ["Niggunim for Farbrengen","18 songs"],
+  ["Chabad Classics","25 songs"],
+  ["Deep Chabad","16 songs"],
+  ["Niggunim of Dveikus","21 songs"],
+  ["Simcha & Geulah","14 songs"]
+
 ];
 
-/* ---------------------------------------
-   SAVED BROWSER DATA
---------------------------------------- */
+const categories = [
 
-function readSaved(key, fallback) {
-  try {
-    const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : fallback;
-  } catch (error) {
-    return fallback;
-  }
+  ["Farbrengen","cat1"],
+  ["Dveikus","cat2"],
+  ["Simcha","cat3"],
+  ["Classic Niggunim","cat4"],
+  ["Geulah","cat5"],
+  ["Meditative","cat6"]
+
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentSongIndex = 0;
+let playing = false;
+let shuffled = false;
+let repeated = false;
+let favorite = false;
+let authMode = "signin";
+
+let recentSongIndexes =
+  JSON.parse(
+    localStorage.getItem("nc_recent") || "[]"
+  );
+
+let playlists =
+  JSON.parse(
+    localStorage.getItem("nc_playlists") || "[]"
+  );
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getArtist(id){
+  return artists.find(a => a.id === id);
 }
 
-function saveData(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    showToast("Your browser couldn't save this change.");
-  }
+function getAlbum(id){
+  return albums.find(a => a.id === id);
 }
 
-let favorites = readSaved("nc-favorites", []);
-let playlists = readSaved("nc-playlists", []);
-let recentlyPlayed = readSaved("nc-recent", []);
-let currentPage = "home";
-let currentSongId = null;
-let searchTerm = "";
-let currentCollection = null;
-let currentPlaylistId = null;
-
-const $ = (selector) => document.querySelector(selector);
-const main = $("#mainContent");
-const audio = $("#audioElement");
-
-/* ---------------------------------------
-   GENERAL HELPERS
---------------------------------------- */
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[character]);
+function getComposer(id){
+  return composers.find(c => c.id === id);
 }
 
-function getSong(id) {
-  return songs.find(song => song.id === Number(id));
+function artistName(id){
+  const a = getArtist(id);
+  return a ? a.name : "Chabad Niggun";
 }
 
-function getCurrentSong() {
-  return getSong(currentSongId);
+function composerName(id){
+  const c = getComposer(id);
+  return c ? c.name : "Chabad";
 }
 
-function showToast(message) {
-  document.querySelector(".toast")?.remove();
-
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.remove(), 2800);
+function artClass(index){
+  return "a" + ((index % 8) + 1);
 }
 
-function formatTime(seconds) {
-  if (!Number.isFinite(seconds)) return "0:00";
+function artHTML(item,index=0){
 
-  const minutes = Math.floor(seconds / 60);
-  const remainder = Math.floor(seconds % 60);
+  const image =
+    item.image ||
+    (
+      item.artistId
+        ? getArtist(item.artistId)?.image
+        : ""
+    );
 
-  return `${minutes}:${String(remainder).padStart(2, "0")}`;
-}
+  if(image){
 
-function pageHeading(title, subtitle = "") {
-  return `
-    <div class="page-heading">
-      <h1>${escapeHTML(title)}</h1>
-      ${subtitle ? `<p>${escapeHTML(subtitle)}</p>` : ""}
-    </div>
-  `;
-}
-
-function sectionHeading(title, subtitle, page) {
-  return `
-    <div class="section-heading">
-      <div>
-        <h2>${escapeHTML(title)}</h2>
-        ${subtitle ? `<p>${escapeHTML(subtitle)}</p>` : ""}
+    return `
+      <div class="art ${artClass(index)}">
+        <img src="${image}" alt="">
       </div>
-      <button class="text-button" data-page="${escapeHTML(page)}">
-        See all →
-      </button>
+    `;
+
+  }
+
+  const initials =
+    item.initials ||
+    item.name?.split(" ").map(x=>x[0]).join("").slice(0,2) ||
+    "NC";
+
+  return `
+    <div class="art ${artClass(index)}">
+      <div class="art-content">
+        <div class="art-initial">${initials}</div>
+      </div>
     </div>
   `;
 }
 
-/* ---------------------------------------
-   SONG LISTS AND MUSIC CARDS
---------------------------------------- */
+function artistArtHTML(artist,index=0){
 
-function songRow(song, index, showNumber = true) {
-  const isFavorite = favorites.includes(song.id);
+  if(artist.image){
+
+    return `
+      <div class="art ${artClass(index)}">
+        <img src="${artist.image}" alt="${artist.name}">
+      </div>
+    `;
+
+  }
 
   return `
-    <div class="song-row">
-      ${showNumber ? `<span class="song-number">${index + 1}</span>` : ""}
+    <div class="art ${artClass(index)}">
+      <div class="art-content">
+        <div class="art-initial">
+          ${artist.name.split(" ").map(x=>x[0]).join("").slice(0,2)}
+        </div>
+      </div>
+    </div>
+  `;
+}
 
-      <button class="song-cover" data-play="${song.id}"
-              aria-label="Play ${escapeHTML(song.title)}">♫</button>
+/* =========================================================
+   SONG CARDS
+========================================================= */
 
-      <div class="song-info">
-        <strong>${escapeHTML(song.title)}</strong>
-        <span>${escapeHTML(song.artist)}</span>
+function songCard(song,index){
+
+  return `
+    <button
+      class="music-card"
+      type="button"
+      data-song="${songs.indexOf(song)}"
+    >
+
+      ${artHTML(song,index)}
+
+      <div class="card-title">
+        ${song.title}
       </div>
 
-      <button class="icon-button ${isFavorite ? "is-favorite" : ""}"
-              data-favorite="${song.id}"
-              aria-label="${isFavorite ? "Remove from" : "Add to"} favorites">
-        ${isFavorite ? "♥" : "♡"}
-      </button>
-    </div>
-  `;
-}
+      <div class="card-subtitle">
+        ${artistName(song.artistId)}
+      </div>
 
-function songChart(list) {
-  return `
-    <div class="song-chart">
-      ${list.map((song, index) => songRow(song, index)).join("")}
-    </div>
-  `;
-}
-
-function circleItem(name, type, index) {
-  const symbols = ["♫", "♪", "♬", "♩", "𝄞", "✦", "♪"];
-  const symbol = symbols[index % symbols.length];
-
-  return `
-    <button class="circle-item"
-            data-collection="${escapeHTML(type)}"
-            data-name="${escapeHTML(name)}">
-      <span class="circle-art">${symbol}</span>
-      <strong>${escapeHTML(name)}</strong>
-      <small>${escapeHTML(type === "composer" ? "Composer" :
-                           type === "singer" ? "Singer" :
-                           type === "category" ? "Category" : "Collection")}</small>
     </button>
   `;
 }
 
-function circleSection(items, type) {
+/* =========================================================
+   COMPOSER CARDS
+========================================================= */
+
+function composerCard(composer,index){
+
   return `
-    <div class="circle-grid">
-      ${items.slice(0, 7).map((name, index) =>
-        circleItem(name, type, index)
-      ).join("")}
-    </div>
-  `;
-}
+    <button
+      class="music-card"
+      type="button"
+      data-composer="${composer.id}"
+    >
 
-function singerSection() {
-  return `
-    <div class="singer-list">
-      ${singers.slice(0, 6).map((name, index) => `
-        <button class="singer-row"
-                data-collection="singer"
-                data-name="${escapeHTML(name)}">
-          <span class="singer-avatar">${["♫", "♪", "♬"][index % 3]}</span>
-          <span>
-            <strong>${escapeHTML(name)}</strong>
-            <small>Singer</small>
-          </span>
-        </button>
-      `).join("")}
-    </div>
-  `;
-}
+      <div class="art ${artClass(index)}">
 
-function categorySection() {
-  return `
-    <div class="category-grid">
-      ${categories.slice(0, 8).map((name, index) => `
-        <button class="category-card"
-                data-collection="category"
-                data-name="${escapeHTML(name)}">
-          <span>${["♫", "♪", "♬", "✦"][index % 4]}</span>
-          ${escapeHTML(name)}
-        </button>
-      `).join("")}
-    </div>
-  `;
-}
+        <div class="art-content">
 
-/* ---------------------------------------
-   HOMEPAGE
---------------------------------------- */
+          <div class="art-initial">
+            ${composer.initials}
+          </div>
 
-function renderHome() {
-  const weekly = songs.slice(0, 7);
-  const topSongs = songs.slice(0, 12);
-  const recentSongs = recentlyPlayed
-    .map(id => getSong(id))
-    .filter(Boolean)
-    .slice(0, 12);
-
-  main.innerHTML = `
-    <section class="hero">
-      <div class="hero-copy">
-        <span class="eyebrow">WELCOME TO NIGGUNEICHABAD</span>
-        <h1>The home of Chabad niggunim.</h1>
-        <p>Discover melodies, explore composers, and find niggunim for every moment.</p>
-        <button class="button button-primary" data-page="weekly">
-          Explore niggunim →
-        </button>
-      </div>
-      <div class="hero-art" aria-hidden="true">♫</div>
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Niggunim of the Week", "Melodies to discover", "weekly")}
-      ${circleSection(weekly.map(song => song.title), "song")}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Composers", "Explore the people behind the melodies", "composers")}
-      ${circleSection(composers, "composer")}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Top 12 of the Week", "Featured niggunim", "top12")}
-      ${songChart(topSongs)}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Chabad Niggunim Playlists", "Collections selected for you", "official")}
-      ${circleSection(officialPlaylists, "official")}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("My Own Playlists", "Your personal collections", "playlists")}
-      ${playlists.length
-        ? playlistCards(playlists.slice(0, 7))
-        : `<div class="empty-state">
-             <span>♫</span>
-             <h2>Create your own playlist</h2>
-             <p>Collect the niggunim you love in your own private playlists.</p>
-             <button class="button button-primary" data-action="create-playlist">
-               + Create your playlist
-             </button>
-           </div>`}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Singers", "Discover performers", "singers")}
-      ${singerSection()}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Recently Listened To", "Your listening history", "recent")}
-      ${recentSongs.length
-        ? songChart(recentSongs)
-        : `<div class="empty-state">
-             <span>♫</span>
-             <h2>Your listening history starts here</h2>
-             <p>When you choose a niggun, it will appear in this section.</p>
-           </div>`}
-    </section>
-
-    <section class="section">
-      ${sectionHeading("Categories", "Find the right niggun for the moment", "categories")}
-      ${categorySection()}
-    </section>
-  `;
-
-  setActiveNav("home");
-}
-
-/* ---------------------------------------
-   COLLECTION AND DETAIL PAGES
---------------------------------------- */
-
-function renderSongPage(title, list, subtitle = "") {
-  main.innerHTML = `
-    ${pageHeading(title, subtitle)}
-    ${list.length
-      ? songChart(list)
-      : `<div class="empty-state">
-           <span>♫</span>
-           <h2>No niggunim here yet</h2>
-           <p>This collection doesn't have any songs to show yet.</p>
-         </div>`}
-  `;
-}
-
-function renderCollection(name, type) {
-  let list = [];
-
-  if (type === "song") {
-    const selected = songs.find(song => song.title === name);
-    if (selected) {
-      playSong(selected.id);
-      return;
-    }
-  } else if (type === "category") {
-    list = songs.filter(song => song.category === name);
-  } else if (type === "composer") {
-    list = songs.filter(song => song.composer === name);
-  } else if (type === "singer") {
-    list = songs.filter(song => song.artist === name);
-  } else if (type === "official") {
-    list = songs.filter(song =>
-      name === "Chabad Classics"
-        ? song.category === "Chabad Classics"
-        : name === "Deep Niggunim"
-          ? song.category === "Deep Niggunim"
-          : name === "Farbrengen Favorites"
-            ? song.category === "Farbrengen"
-            : true
-    );
-  }
-
-  currentCollection = { name, type };
-
-  main.innerHTML = `
-    ${pageHeading(name, `${type === "category" ? "Category" :
-                           type === "composer" ? "Composer" :
-                           type === "singer" ? "Singer" :
-                           "Chabad Niggunim"}`)}
-    <div class="page-toolbar">
-      <span>${list.length} niggunim</span>
-      <button class="button button-light" data-page="home">← Home</button>
-    </div>
-    ${list.length
-      ? songChart(list)
-      : `<div class="empty-state">
-           <span>♫</span>
-           <h2>More music coming soon</h2>
-           <p>This collection is ready for songs to be added.</p>
-         </div>`}
-  `;
-
-  setActiveNav("");
-}
-
-function playlistCards(list) {
-  return `
-    <div class="playlist-grid">
-      ${list.map(playlist => `
-        <div class="playlist-card">
-          <div class="playlist-card-art">♫</div>
-          <h3>${escapeHTML(playlist.name)}</h3>
-          <p>${playlist.songIds.length} songs · Private playlist</p>
-          <button class="button button-light"
-                  data-open-playlist="${playlist.id}">
-            Open playlist
-          </button>
         </div>
-      `).join("")}
-    </div>
+
+      </div>
+
+      <div class="card-title">
+        ${composer.name}
+      </div>
+
+      <div class="card-subtitle">
+        Composer
+      </div>
+
+    </button>
   `;
 }
 
-function renderPlaylists() {
-  main.innerHTML = `
-    ${pageHeading("My Playlists", "Your personal music collections stay in this browser.")}
-    <div class="page-toolbar">
-      <span>${playlists.length} playlists</span>
-      <button class="button button-primary" data-action="create-playlist">
-        + Create playlist
+/* =========================================================
+   ARTIST CARDS
+========================================================= */
+
+function singerCard(artist,index){
+
+  return `
+    <button
+      class="music-card"
+      type="button"
+      data-artist="${artist.id}"
+    >
+
+      ${artistArtHTML(artist,index)}
+
+      <div class="card-title">
+        ${artist.name}
+      </div>
+
+      <div class="card-subtitle">
+        Singer
+      </div>
+
+    </button>
+  `;
+}
+
+/* =========================================================
+   CHART ROW
+========================================================= */
+
+function chartRow(song,index){
+
+  const songIndex =
+    songs.indexOf(song);
+
+  const image =
+    song.image ||
+    getArtist(song.artistId)?.image ||
+    "";
+
+  return `
+    <div class="chart-row">
+
+      <div class="chart-number">
+        ${index+1}
+      </div>
+
+      <button
+        class="chart-song"
+        type="button"
+        data-song="${songIndex}"
+      >
+
+        <div class="chart-mini-art">
+
+          ${
+            image
+              ? `<img src="${image}" alt="">`
+              : song.initials
+          }
+
+        </div>
+
+        <div class="chart-info">
+
+          <div class="chart-title">
+            ${song.title}
+          </div>
+
+          <div class="chart-artist">
+            ${artistName(song.artistId)}
+          </div>
+
+        </div>
+
       </button>
-    </div>
-    ${playlists.length
-      ? playlistCards(playlists)
-      : `<div class="empty-state">
-           <span>♫</span>
-           <h2>Your playlists, your way</h2>
-           <p>Create a playlist, give it a name, and add songs whenever you like.</p>
-           <button class="button button-primary" data-action="create-playlist">
-             Create your first playlist
-           </button>
-         </div>`}
-  `;
 
-  setActiveNav("playlists");
+      <button
+        class="play-small"
+        type="button"
+        data-song="${songIndex}"
+      >▶</button>
+
+    </div>
+  `;
 }
 
-function renderPlaylist(id) {
-  const playlist = playlists.find(item => item.id === id);
-  if (!playlist) return renderPlaylists();
+/* =========================================================
+   RENDER HOME
+========================================================= */
 
-  currentPlaylistId = id;
-  const list = playlist.songIds.map(getSong).filter(Boolean);
+function renderWeekly(){
 
-  main.innerHTML = `
-    ${pageHeading(playlist.name, "Your private playlist")}
-    <div class="page-toolbar">
-      <button class="button button-light" data-page="playlists">← My Playlists</button>
-      <button class="button button-light"
-              data-action="delete-playlist"
-              data-id="${playlist.id}">
-        Delete playlist
+  document.getElementById("weeklySongs").innerHTML =
+    songs
+      .slice(0,6)
+      .map((song,i)=>songCard(song,i))
+      .join("");
+
+}
+
+function renderComposers(){
+
+  document.getElementById("composers").innerHTML =
+    composers
+      .map((composer,i)=>composerCard(composer,i))
+      .join("");
+
+}
+
+function renderSingers(){
+
+  document.getElementById("singers").innerHTML =
+    artists
+      .map((artist,i)=>singerCard(artist,i))
+      .join("");
+
+}
+
+function renderTopChart(){
+
+  document.getElementById("topChart").innerHTML =
+    songs
+      .slice(0,12)
+      .map((song,i)=>chartRow(song,i))
+      .join("");
+
+}
+
+function getRecentSongs(){
+
+  const result = [];
+
+  recentSongIndexes.forEach(index=>{
+
+    const song = songs[index];
+
+    if(song && !result.includes(song)){
+      result.push(song);
+    }
+
+  });
+
+  songs.forEach(song=>{
+
+    if(result.length < 12 &&
+       !result.includes(song)){
+
+      result.push(song);
+
+    }
+
+  });
+
+  return result.slice(0,12);
+}
+
+function renderRecent(){
+
+  document.getElementById("recentChart").innerHTML =
+    getRecentSongs()
+      .map((song,i)=>chartRow(song,i))
+      .join("");
+
+}
+
+function renderOfficialPlaylists(){
+
+  document.getElementById("officialPlaylists").innerHTML =
+    officialPlaylists.map(p=>`
+
+      <button
+        class="playlist-card"
+        type="button"
+      >
+
+        <div class="playlist-art">
+
+          <div class="line"></div>
+          <div class="line2"></div>
+
+          <div class="playlist-label">
+            ${p[0]}
+          </div>
+
+          <div class="playlist-meta">
+            ${p[1]}
+          </div>
+
+        </div>
+
       </button>
-    </div>
 
-    <section class="section">
-      <h2>Add a niggun</h2>
-      <p>Choose a song below to add it to this playlist.</p>
-      ${songChart(songs.filter(song => !playlist.songIds.includes(song.id)))}
-    </section>
+    `).join("");
 
-    <section class="section">
-      <h2>Songs in this playlist (${list.length})</h2>
-      ${list.length
-        ? `<div class="song-chart">
-            ${list.map((song, index) => `
-              <div>
-                ${songRow(song, index, false)}
-                <button class="text-button"
-                        data-remove-from-playlist="${song.id}"
-                        data-id="${playlist.id}">
-                  Remove from playlist
-                </button>
-              </div>
-            `).join("")}
-           </div>`
-        : `<div class="empty-state">
-             <span>♫</span>
-             <h2>This playlist is empty</h2>
-             <p>Add some niggunim from the list above.</p>
-           </div>`}
-    </section>
+}
+
+function renderCategories(){
+
+  document.getElementById("categories").innerHTML =
+    categories.map(c=>`
+
+      <button
+        class="category-card ${c[1]}"
+        type="button"
+      >
+
+        <span></span>
+
+        <strong>${c[0]}</strong>
+
+      </button>
+
+    `).join("");
+
+}
+
+function renderPlaylists(){
+
+  const container =
+    document.getElementById("myPlaylists");
+
+  let html = `
+
+    <button
+      class="create-playlist"
+      id="createPlaylistButton"
+      type="button"
+    >
+
+      <div class="plus">+</div>
+
+      <strong>Create Playlist</strong>
+
+    </button>
   `;
 
-  setActiveNav("playlists");
-}
+  html += playlists.map(p=>`
 
-/* ---------------------------------------
-   SEARCH
---------------------------------------- */
+    <button
+      class="playlist-card"
+      type="button"
+    >
 
-function renderSearch(query = "") {
-  const normalized = query.trim().toLowerCase();
+      <div class="playlist-art">
 
-  const results = normalized
-    ? songs.filter(song =>
-        `${song.title} ${song.artist} ${song.composer} ${song.category}`
-          .toLowerCase()
-          .includes(normalized)
-      )
-    : songs;
+        <div class="line"></div>
+        <div class="line2"></div>
 
-  main.innerHTML = `
-    ${pageHeading("Search", "Find niggunim by title, singer, composer, or category.")}
-    <label class="search page-search">
-      <span aria-hidden="true">⌕</span>
-      <input id="pageSearchInput" type="search"
-             placeholder="What would you like to hear?"
-             value="${escapeHTML(query)}"
-             aria-label="Search all music">
-    </label>
-    <p>${normalized ? `${results.length} results` : "Browse all available niggunim"}</p>
-    ${songChart(results)}
-  `;
+        <div class="playlist-label">
+          ${p.name}
+        </div>
 
-  setActiveNav("search");
+        <div class="playlist-meta">
+          ${p.songIndexes?.length || 0} songs
+        </div>
 
-  const input = $("#pageSearchInput");
-  input?.addEventListener("input", event => {
-    const cursor = event.target.selectionStart;
-    renderSearch(event.target.value);
-    const replacement = $("#pageSearchInput");
-    replacement?.focus();
-    replacement?.setSelectionRange(cursor, cursor);
-  });
-}
+      </div>
 
-function renderLibrary() {
-  const list = favorites.map(getSong).filter(Boolean);
+    </button>
 
-  main.innerHTML = `
-    ${pageHeading("Your Library", "Niggunim you've saved to your favorites.")}
-    ${list.length
-      ? songChart(list)
-      : `<div class="empty-state">
-           <span>♡</span>
-           <h2>Your favorites live here</h2>
-           <p>Press the heart beside a niggun to save it to your library.</p>
-           <button class="button button-primary" data-page="home">Explore music</button>
-         </div>`}
-  `;
+  `).join("");
 
-  setActiveNav("library");
-}
+  container.innerHTML = html;
 
-/* ---------------------------------------
-   NAVIGATION
---------------------------------------- */
+  document
+    .getElementById("createPlaylistButton")
+    .addEventListener("click",()=>{
 
-function setActiveNav(page) {
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.page === page
-    );
-  });
-}
+      openModal("playlistModal");
 
-function navigate(page) {
-  currentPage = page;
-  currentCollection = null;
-  currentPlaylistId = null;
+      setTimeout(()=>{
+        document
+          .getElementById("playlistName")
+          .focus();
+      },100);
 
-  if (page === "home") {
-    renderHome();
-  } else if (page === "search") {
-    renderSearch(searchTerm);
-  } else if (page === "library") {
-    renderLibrary();
-  } else if (page === "playlists") {
-    renderPlaylists();
-  } else if (page === "weekly") {
-    renderSongPage("Niggunim of the Week", songs.slice(0, 7),
-      "A selection of niggunim to explore.");
-    setActiveNav("weekly");
-  } else if (page === "top12") {
-    renderSongPage("Top 12 of the Week", songs.slice(0, 12),
-      "Featured niggunim. Real listening-based rankings can be added with a backend.");
-    setActiveNav("top12");
-  } else if (page === "recent") {
-    renderSongPage("Recently Listened To",
-      recentlyPlayed.map(getSong).filter(Boolean).slice(0, 12),
-      "Your recent listening history.");
-  } else if (page === "composers") {
-    main.innerHTML = `${pageHeading("Composers", "Explore Chabad composers.")}${circleSection(composers, "composer")}`;
-    setActiveNav("composers");
-  } else if (page === "singers") {
-    main.innerHTML = `${pageHeading("Singers", "Explore performers.")}${singerSection()}`;
-    setActiveNav("singers");
-  } else if (page === "categories") {
-    main.innerHTML = `${pageHeading("Categories", "Browse niggunim by category.")}${categorySection()}`;
-    setActiveNav("categories");
-  } else if (page === "official") {
-    main.innerHTML = `${pageHeading("Chabad Niggunim Playlists", "Curated music collections.")}${circleSection(officialPlaylists, "official")}`;
-    setActiveNav("");
-  } else {
-    renderHome();
-  }
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-/* ---------------------------------------
-   FAVORITES
---------------------------------------- */
-
-function toggleFavorite(id) {
-  id = Number(id);
-
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(item => item !== id);
-    showToast("Removed from your favorites.");
-  } else {
-    favorites.push(id);
-    showToast("Added to your favorites.");
-  }
-
-  saveData("nc-favorites", favorites);
-
-  if (currentPage === "library") {
-    renderLibrary();
-  } else if (currentPage === "home") {
-    renderHome();
-  } else if (currentPage === "playlists") {
-    if (currentPlaylistId) renderPlaylist(currentPlaylistId);
-    else renderPlaylists();
-  } else if (currentPage === "search") {
-    renderSearch(searchTerm);
-  } else if (currentCollection) {
-    renderCollection(currentCollection.name, currentCollection.type);
-  } else {
-    navigate(currentPage);
-  }
-
-  updatePlayerFavorite();
-}
-
-/* ---------------------------------------
-   PLAYER
---------------------------------------- */
-
-function playSong(id) {
-  const song = getSong(id);
-  if (!song) return;
-
-  currentSongId = song.id;
-
-  recentlyPlayed = [
-    song.id,
-    ...recentlyPlayed.filter(item => item !== song.id)
-  ].slice(0, 12);
-
-  saveData("nc-recent", recentlyPlayed);
-
-  $("#playerBar").hidden = false;
-  $("#playerTitle").textContent = song.title;
-  $("#playerArtist").textContent = song.artist;
-  $("#playerCover").textContent = "♫";
-
-  if (song.audio) {
-    audio.src = song.audio;
-    audio.play().then(() => {
-      $("#playPauseBtn").textContent = "Ⅱ";
-    }).catch(() => {
-      $("#playPauseBtn").textContent = "▶";
-      showToast("Press play to try again.");
     });
-  } else {
-    audio.pause();
-    audio.removeAttribute("src");
-    $("#playPauseBtn").textContent = "▶";
-    $("#currentTime").textContent = "0:00";
-    $("#duration").textContent = "0:00";
-    $("#progress").value = 0;
-    showToast("This song needs an audio file before it can play.");
-  }
 
-  updatePlayerFavorite();
 }
 
-function togglePlayback() {
-  const song = getCurrentSong();
-  if (!song) {
-    showToast("Choose a niggun first.");
+/* =========================================================
+   PLAYER
+========================================================= */
+
+function playSong(index){
+
+  index = Number(index);
+
+  if(!songs[index]) return;
+
+  currentSongIndex = index;
+
+  recentSongIndexes = [
+    index,
+    ...recentSongIndexes.filter(i=>i !== index)
+  ].slice(0,12);
+
+  localStorage.setItem(
+    "nc_recent",
+    JSON.stringify(recentSongIndexes)
+  );
+
+  playing = true;
+
+  updatePlayer();
+
+  document
+    .getElementById("bottomPlayer")
+    .classList.add("active");
+
+  updatePlayButtons();
+
+}
+
+function updatePlayer(){
+
+  const song =
+    songs[currentSongIndex];
+
+  const artist =
+    getArtist(song.artistId);
+
+  const songImage =
+    song.image ||
+    artist?.image ||
+    "";
+
+  document
+    .getElementById("miniTitle")
+    .textContent =
+      song.title;
+
+  document
+    .getElementById("miniArtist")
+    .textContent =
+      artistName(song.artistId);
+
+  const miniArt =
+    document.getElementById("miniArt");
+
+  miniArt.innerHTML =
+    songImage
+      ? `<img src="${songImage}" alt="">`
+      : song.initials;
+
+  document
+    .getElementById("playerTitle")
+    .textContent =
+      song.title;
+
+  document
+    .getElementById("playerArtist")
+    .textContent =
+      artistName(song.artistId) +
+      " • " +
+      composerName(song.composerId);
+
+  const bigArt =
+    document.getElementById("bigArt");
+
+  bigArt.innerHTML =
+    songImage
+      ? `<img src="${songImage}" alt="">`
+      : song.initials;
+
+  renderRecent();
+
+  attachDynamicListeners();
+
+}
+
+function updatePlayButtons(){
+
+  document
+    .getElementById("miniPlay")
+    .textContent =
+      playing ? "Ⅱ" : "▶";
+
+  document
+    .getElementById("bigPlay")
+    .textContent =
+      playing ? "Ⅱ" : "▶";
+
+}
+
+function openPlayer(){
+
+  if(!songs[currentSongIndex]) return;
+
+  document
+    .getElementById("playerScreen")
+    .classList.add("open");
+
+}
+
+function closePlayer(){
+
+  document
+    .getElementById("playerScreen")
+    .classList.remove("open");
+
+}
+
+function nextSong(){
+
+  if(shuffled){
+
+    let next =
+      Math.floor(Math.random()*songs.length);
+
+    if(songs.length > 1 &&
+       next === currentSongIndex){
+
+      next =
+        (next + 1) % songs.length;
+
+    }
+
+    playSong(next);
     return;
+
   }
 
-  if (!song.audio) {
-    showToast("This niggun needs an audio URL before it can play.");
-    return;
-  }
+  const next =
+    (currentSongIndex + 1) % songs.length;
 
-  if (audio.paused) {
-    audio.play().catch(() => showToast("Couldn't play this audio file."));
-  } else {
-    audio.pause();
-  }
+  playSong(next);
+
 }
 
-function playNext(direction) {
-  const currentIndex = songs.findIndex(song => song.id === currentSongId);
-  const nextIndex = currentIndex < 0
-    ? 0
-    : (currentIndex + direction + songs.length) % songs.length;
+function previousSong(){
 
-  playSong(songs[nextIndex].id);
+  const previous =
+    (currentSongIndex - 1 + songs.length)
+    % songs.length;
+
+  playSong(previous);
+
 }
 
-function updatePlayerFavorite() {
-  const button = $("#playerFavorite");
-  if (!button || !currentSongId) return;
+/* =========================================================
+   DETAIL PAGES
+========================================================= */
 
-  const isFavorite = favorites.includes(currentSongId);
-  button.textContent = isFavorite ? "♥" : "♡";
-  button.classList.toggle("is-favorite", isFavorite);
+function openDetail(title,subheading,art,html){
+
+  document
+    .getElementById("detailTitle")
+    .textContent = title;
+
+  document
+    .getElementById("detailHeading")
+    .textContent = title;
+
+  document
+    .getElementById("detailSubheading")
+    .textContent = subheading || "";
+
+  document
+    .getElementById("detailArt")
+    .innerHTML = art;
+
+  document
+    .getElementById("detailSongs")
+    .innerHTML = html;
+
+  document
+    .getElementById("detailScreen")
+    .classList.add("open");
+
+  attachDynamicListeners();
+
 }
 
-audio.addEventListener("play", () => {
-  $("#playPauseBtn").textContent = "Ⅱ";
-});
+function openArtist(id){
 
-audio.addEventListener("pause", () => {
-  $("#playPauseBtn").textContent = "▶";
-});
+  const artist =
+    getArtist(id);
 
-audio.addEventListener("loadedmetadata", () => {
-  $("#duration").textContent = formatTime(audio.duration);
-});
+  if(!artist) return;
 
-audio.addEventListener("timeupdate", () => {
-  $("#currentTime").textContent = formatTime(audio.currentTime);
+  const artistAlbums =
+    albums.filter(a=>a.artistId === id);
 
-  if (Number.isFinite(audio.duration) && audio.duration > 0) {
-    $("#progress").value = (audio.currentTime / audio.duration) * 100;
-  }
-});
+  const art =
+    artist.image
+      ? `<img src="${artist.image}" alt="${artist.name}">`
+      : artist.name
+          .split(" ")
+          .map(x=>x[0])
+          .join("")
+          .slice(0,2);
 
-audio.addEventListener("ended", () => playNext(1));
+  let html = "";
 
-$("#progress").addEventListener("input", event => {
-  if (Number.isFinite(audio.duration) && audio.duration > 0) {
-    audio.currentTime = (Number(event.target.value) / 100) * audio.duration;
-  }
-});
+  artistAlbums.forEach((album,index)=>{
 
-/* ---------------------------------------
-   PLAYLISTS
---------------------------------------- */
+    html += `
 
-function createPlaylist() {
-  openModal("Create a playlist", `
-    <form id="createPlaylistForm">
-      <label for="playlistName">Playlist name</label>
-      <input id="playlistName" name="playlistName"
-             maxlength="70" required
-             placeholder="e.g. My favorite niggunim">
-      <p class="modal-note">
-        This playlist is saved in this browser. It is not yet connected
-        to an online account.
-      </p>
-      <button class="button button-primary full-width" type="submit">
-        Create playlist
+      <button
+        class="music-card"
+        type="button"
+        data-album="${album.id}"
+      >
+
+        ${
+          album.image
+            ? `
+              <div class="art ${artClass(index)}">
+                <img src="${album.image}" alt="">
+              </div>
+            `
+            :
+            `
+              <div class="art ${artClass(index)}">
+                <div class="art-content">
+                  <div class="art-initial">
+                    ${album.title
+                      .split(" ")
+                      .map(x=>x[0])
+                      .join("")
+                      .slice(0,2)}
+                  </div>
+                </div>
+              </div>
+            `
+        }
+
+        <div class="card-title">
+          ${album.title}
+        </div>
+
+        <div class="card-subtitle">
+          ${album.songs.length} songs
+        </div>
+
       </button>
-    </form>
-  `);
+    `;
 
-  $("#createPlaylistForm").addEventListener("submit", event => {
-    event.preventDefault();
+  });
 
-    const name = $("#playlistName").value.trim();
-    if (!name) return;
+  document
+    .getElementById("detailSongs")
+    .className = "horizontal";
 
-    const playlist = {
-      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      name,
-      songIds: []
+  openDetail(
+    artist.name,
+    "Albums",
+    art,
+    html || `
+      <p style="color:#777">
+        No albums yet.
+      </p>
+    `
+  );
+
+}
+
+function openAlbum(id){
+
+  const album =
+    getAlbum(id);
+
+  if(!album) return;
+
+  const artist =
+    getArtist(album.artistId);
+
+  const html =
+    album.songs.map(songIndex=>{
+
+      const song =
+        songs[songIndex];
+
+      return `
+
+        <button
+          class="detail-song"
+          type="button"
+          data-song="${songIndex}"
+        >
+
+          <div class="detail-song-art">
+            ${song.initials}
+          </div>
+
+          <div class="detail-song-info">
+
+            <div class="detail-song-title">
+              ${song.title}
+            </div>
+
+            <div class="detail-song-sub">
+              ${artistName(song.artistId)}
+            </div>
+
+          </div>
+
+          <div class="detail-play">
+            ▶
+          </div>
+
+        </button>
+
+      `;
+
+    }).join("");
+
+  document
+    .getElementById("detailSongs")
+    .className = "detail-song-list";
+
+  const albumImage =
+    album.image ||
+    artist?.image ||
+    "";
+
+  const art =
+    albumImage
+      ? `<img src="${albumImage}" alt="${album.title}">`
+      : album.title
+          .split(" ")
+          .map(x=>x[0])
+          .join("")
+          .slice(0,2);
+
+  openDetail(
+    album.title,
+    artist
+      ? artist.name + " • Album"
+      : "Album",
+    art,
+    html
+  );
+
+}
+
+function openComposer(id){
+
+  const composer =
+    getComposer(id);
+
+  if(!composer) return;
+
+  const composerSongs =
+    songs.filter(
+      song => song.composerId === id
+    );
+
+  const html =
+    composerSongs.map((song,index)=>{
+
+      const songIndex =
+        songs.indexOf(song);
+
+      return `
+
+        <button
+          class="detail-song"
+          type="button"
+          data-song="${songIndex}"
+        >
+
+          <div class="detail-song-art">
+            ${song.initials}
+          </div>
+
+          <div class="detail-song-info">
+
+            <div class="detail-song-title">
+              ${song.title}
+            </div>
+
+            <div class="detail-song-sub">
+              ${artistName(song.artistId)}
+            </div>
+
+          </div>
+
+          <div class="detail-play">
+            ▶
+          </div>
+
+        </button>
+
+      `;
+
+    }).join("");
+
+  document
+    .getElementById("detailSongs")
+    .className = "detail-song-list";
+
+  openDetail(
+    composer.name,
+    "Songs by this composer",
+    composer.initials,
+    html ||
+      `<p style="color:#777">
+        No songs yet.
+      </p>`
+  );
+
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function doSearch(){
+
+  const q =
+    document
+      .getElementById("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const results =
+    document.getElementById("searchResults");
+
+  if(!q){
+
+    results.innerHTML =
+      `<p style="color:#777">
+        Start typing to search.
+      </p>`;
+
+    return;
+
+  }
+
+  const foundSongs =
+    songs.filter(song=>
+      song.title.toLowerCase().includes(q) ||
+      artistName(song.artistId)
+        .toLowerCase()
+        .includes(q) ||
+      composerName(song.composerId)
+        .toLowerCase()
+        .includes(q)
+    );
+
+  const foundArtists =
+    artists.filter(artist=>
+      artist.name.toLowerCase().includes(q)
+    );
+
+  const foundAlbums =
+    albums.filter(album=>
+      album.title.toLowerCase().includes(q)
+    );
+
+  const foundComposers =
+    composers.filter(composer=>
+      composer.name.toLowerCase().includes(q)
+    );
+
+  let html = "";
+
+  foundSongs.forEach(song=>{
+
+    const index =
+      songs.indexOf(song);
+
+    html += `
+
+      <button
+        class="search-result"
+        type="button"
+        data-search-song="${index}"
+      >
+
+        <div class="search-result-art">
+          ${song.initials}
+        </div>
+
+        <div class="search-result-info">
+
+          <div class="search-result-title">
+            ${song.title}
+          </div>
+
+          <div class="search-result-sub">
+            Song • ${artistName(song.artistId)}
+          </div>
+
+        </div>
+
+      </button>
+
+    `;
+
+  });
+
+  foundArtists.forEach(artist=>{
+
+    html += `
+
+      <button
+        class="search-result"
+        type="button"
+        data-search-artist="${artist.id}"
+      >
+
+        <div class="search-result-art">
+          ${
+            artist.image
+              ? `<img src="${artist.image}" alt="">`
+              :
+              artist.name
+                .split(" ")
+                .map(x=>x[0])
+                .join("")
+                .slice(0,2)
+          }
+        </div>
+
+        <div class="search-result-info">
+
+          <div class="search-result-title">
+            ${artist.name}
+          </div>
+
+          <div class="search-result-sub">
+            Singer / Artist
+          </div>
+
+        </div>
+
+      </button>
+
+    `;
+
+  });
+
+  foundAlbums.forEach(album=>{
+
+    html += `
+
+      <button
+        class="search-result"
+        type="button"
+        data-search-album="${album.id}"
+      >
+
+        <div class="search-result-art">
+          ${
+            album.title
+              .split(" ")
+              .map(x=>x[0])
+              .join("")
+              .slice(0,2)
+          }
+        </div>
+
+        <div class="search-result-info">
+
+          <div class="search-result-title">
+            ${album.title}
+          </div>
+
+          <div class="search-result-sub">
+            Album • ${artistName(album.artistId)}
+          </div>
+
+        </div>
+
+      </button>
+
+    `;
+
+  });
+
+  foundComposers.forEach(composer=>{
+
+    html += `
+
+      <button
+        class="search-result"
+        type="button"
+        data-search-composer="${composer.id}"
+      >
+
+        <div class="search-result-art">
+          ${composer.initials}
+        </div>
+
+        <div class="search-result-info">
+
+          <div class="search-result-title">
+            ${composer.name}
+          </div>
+
+          <div class="search-result-sub">
+            Composer
+          </div>
+
+        </div>
+
+      </button>
+
+    `;
+
+  });
+
+  results.innerHTML =
+    html ||
+    `<p style="color:#777">
+      Nothing found.
+    </p>`;
+
+  results
+    .querySelectorAll("[data-search-song]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        playSong(button.dataset.searchSong);
+
+        closeModal("searchModal");
+
+        openPlayer();
+
+      });
+
+    });
+
+  results
+    .querySelectorAll("[data-search-artist]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        closeModal("searchModal");
+
+        openArtist(button.dataset.searchArtist);
+
+      });
+
+    });
+
+  results
+    .querySelectorAll("[data-search-album]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        closeModal("searchModal");
+
+        openAlbum(button.dataset.searchAlbum);
+
+      });
+
+    });
+
+  results
+    .querySelectorAll("[data-search-composer]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        closeModal("searchModal");
+
+        openComposer(button.dataset.searchComposer);
+
+      });
+
+    });
+
+}
+
+/* =========================================================
+   SEE ALL
+========================================================= */
+
+function openLibrary(section){
+
+  document
+    .getElementById("libraryTitle")
+    .textContent = section;
+
+  const grid =
+    document.getElementById("libraryGrid");
+
+  let html = "";
+
+  if(
+    section === "Top 12 of the Week" ||
+    section === "Recently Listened To" ||
+    section === "Niggunim of the Week"
+  ){
+
+    const list =
+      section === "Recently Listened To"
+        ? getRecentSongs()
+        : songs.slice(0,12);
+
+    html =
+      list.map((song,i)=>
+        songCard(song,i)
+      ).join("");
+
+  }else if(section === "Composers"){
+
+    html =
+      composers
+        .map((composer,i)=>
+          composerCard(composer,i)
+        )
+        .join("");
+
+  }else if(section === "Singers"){
+
+    html =
+      artists
+        .map((artist,i)=>
+          singerCard(artist,i)
+        )
+        .join("");
+
+  }else if(section === "Categories"){
+
+    html =
+      categories.map(c=>`
+
+        <button
+          class="category-card ${c[1]}"
+          type="button"
+        >
+
+          <span></span>
+
+          <strong>${c[0]}</strong>
+
+        </button>
+
+      `).join("");
+
+  }else if(
+    section === "Chabad Niggunim Playlists"
+  ){
+
+    html =
+      officialPlaylists.map(p=>`
+
+        <button
+          style="text-align:left;background:none;"
+          type="button"
+        >
+
+          <div
+            class="playlist-art"
+            style="width:100%;height:150px;"
+          >
+
+            <div class="line"></div>
+            <div class="line2"></div>
+
+            <div class="playlist-label">
+              ${p[0]}
+            </div>
+
+            <div class="playlist-meta">
+              ${p[1]}
+            </div>
+
+          </div>
+
+        </button>
+
+      `).join("");
+
+  }else if(
+    section === "My Own Playlists"
+  ){
+
+    html =
+      playlists.length
+        ?
+        playlists.map(p=>`
+
+          <button
+            style="text-align:left;background:none;"
+            type="button"
+          >
+
+            <div
+              class="playlist-art"
+              style="width:100%;height:150px;"
+            >
+
+              <div class="line"></div>
+              <div class="line2"></div>
+
+              <div class="playlist-label">
+                ${p.name}
+              </div>
+
+              <div class="playlist-meta">
+                ${p.songIndexes?.length || 0}
+                songs
+              </div>
+
+            </div>
+
+          </button>
+
+        `).join("")
+        :
+        `
+          <p style="color:#777">
+            You haven't created any playlists yet.
+          </p>
+        `;
+
+  }
+
+  grid.innerHTML = html;
+
+  document
+    .getElementById("libraryScreen")
+    .classList.add("open");
+
+  attachDynamicListeners();
+
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function openModal(id){
+
+  document
+    .getElementById(id)
+    .classList.add("open");
+
+}
+
+function closeModal(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("open");
+
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function updateAuthUI(){
+
+  const account =
+    JSON.parse(
+      localStorage.getItem("nc_demo_account") || "null"
+    );
+
+  const user =
+    localStorage.getItem("nc_demo_user");
+
+  const button =
+    document.getElementById("authButton");
+
+  if(user){
+
+    button.textContent =
+      account?.firstName
+        ? account.firstName
+        : "Account";
+
+  }else{
+
+    button.textContent =
+      "Sign In";
+
+  }
+
+}
+
+function updateAuthFields(){
+
+  const signup =
+    document.getElementById("signupFields");
+
+  const confirm =
+    document.getElementById("authConfirmPassword");
+
+  const password =
+    document.getElementById("authPassword");
+
+  if(authMode === "signup"){
+
+    signup.style.display = "block";
+
+    confirm.style.display = "block";
+
+    password.autocomplete =
+      "new-password";
+
+    confirm.autocomplete =
+      "new-password";
+
+  }else{
+
+    signup.style.display = "none";
+
+    confirm.style.display = "none";
+
+    password.autocomplete =
+      "current-password";
+
+  }
+
+}
+
+function openAuth(){
+
+  openModal("authModal");
+
+  updateAuthFields();
+
+  setTimeout(()=>{
+
+    const target =
+      authMode === "signup"
+        ? "authFirstName"
+        : "authEmail";
+
+    document
+      .getElementById(target)
+      .focus();
+
+  },100);
+
+}
+
+function submitAuth(){
+
+  const email =
+    document
+      .getElementById("authEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("authPassword")
+      .value;
+
+  if(authMode === "signup"){
+
+    const firstName =
+      document
+        .getElementById("authFirstName")
+        .value
+        .trim();
+
+    const lastName =
+      document
+        .getElementById("authLastName")
+        .value
+        .trim();
+
+    const phone =
+      document
+        .getElementById("authPhone")
+        .value
+        .trim();
+
+    const confirmPassword =
+      document
+        .getElementById("authConfirmPassword")
+        .value;
+
+    if(
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !password ||
+      !confirmPassword
+    ){
+
+      alert(
+        "Please fill in every field."
+      );
+
+      return;
+
+    }
+
+    if(password !== confirmPassword){
+
+      alert(
+        "The passwords do not match."
+      );
+
+      return;
+
+    }
+
+    const account = {
+
+      firstName,
+      lastName,
+      email,
+      phone
+
     };
 
-    playlists.push(playlist);
-    saveData("nc-playlists", playlists);
-    closeModal();
-    renderPlaylist(playlist.id);
-    showToast("Playlist created!");
+    localStorage.setItem(
+      "nc_demo_account",
+      JSON.stringify(account)
+    );
+
+    localStorage.setItem(
+      "nc_demo_user",
+      email
+    );
+
+    closeModal("authModal");
+
+    updateAuthUI();
+
+    alert(
+      "Account created for this prototype!"
+    );
+
+    return;
+
+  }
+
+  if(!email || !password){
+
+    alert(
+      "Please enter your email and password."
+    );
+
+    return;
+
+  }
+
+  localStorage.setItem(
+    "nc_demo_user",
+    email
+  );
+
+  closeModal("authModal");
+
+  updateAuthUI();
+
+  alert(
+    "Signed in for this prototype."
+  );
+
+}
+
+/* =========================================================
+   DYNAMIC LISTENERS
+========================================================= */
+
+function attachDynamicListeners(){
+
+  document
+    .querySelectorAll("[data-song]")
+    .forEach(button=>{
+
+      if(button.dataset.listenerAttached) return;
+
+      button.dataset.listenerAttached = "1";
+
+      button.addEventListener("click",()=>{
+
+        playSong(button.dataset.song);
+
+      });
+
+    });
+
+  document
+    .querySelectorAll("[data-artist]")
+    .forEach(button=>{
+
+      if(button.dataset.listenerAttached) return;
+
+      button.dataset.listenerAttached = "1";
+
+      button.addEventListener("click",()=>{
+
+        openArtist(button.dataset.artist);
+
+      });
+
+    });
+
+  document
+    .querySelectorAll("[data-composer]")
+    .forEach(button=>{
+
+      if(button.dataset.listenerAttached) return;
+
+      button.dataset.listenerAttached = "1";
+
+      button.addEventListener("click",()=>{
+
+        openComposer(button.dataset.composer);
+
+      });
+
+    });
+
+  document
+    .querySelectorAll("[data-album]")
+    .forEach(button=>{
+
+      if(button.dataset.listenerAttached) return;
+
+      button.dataset.listenerAttached = "1";
+
+      button.addEventListener("click",()=>{
+
+        openAlbum(button.dataset.album);
+
+      });
+
+    });
+
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+
+document
+  .getElementById("homeButton")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("libraryScreen")
+      .classList.remove("open");
+
+    document
+      .getElementById("detailScreen")
+      .classList.remove("open");
+
+    document
+      .getElementById("playerScreen")
+      .classList.remove("open");
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
   });
-}
 
-function addSongToPlaylist(playlistId, songId) {
-  const playlist = playlists.find(item => item.id === playlistId);
-  if (!playlist) return;
+/* =========================================================
+   FULL PLAYER
+========================================================= */
 
-  songId = Number(songId);
+document
+  .getElementById("miniArt")
+  .addEventListener("click",openPlayer);
 
-  if (!playlist.songIds.includes(songId)) {
-    playlist.songIds.push(songId);
-    saveData("nc-playlists", playlists);
-    showToast("Added to playlist.");
-  }
+document
+  .getElementById("miniInfo")
+  .addEventListener("click",openPlayer);
 
-  renderPlaylist(playlistId);
-}
+document
+  .getElementById("miniPlay")
+  .addEventListener("click",event=>{
 
-function removeSongFromPlaylist(playlistId, songId) {
-  const playlist = playlists.find(item => item.id === playlistId);
-  if (!playlist) return;
+    event.stopPropagation();
 
-  playlist.songIds = playlist.songIds.filter(id => id !== Number(songId));
-  saveData("nc-playlists", playlists);
-  renderPlaylist(playlistId);
-  showToast("Removed from playlist.");
-}
+    playing = !playing;
 
-function deletePlaylist(id) {
-  if (!confirm("Delete this playlist? This cannot be undone.")) return;
+    updatePlayButtons();
 
-  playlists = playlists.filter(item => item.id !== id);
-  saveData("nc-playlists", playlists);
-  renderPlaylists();
-  showToast("Playlist deleted.");
-}
+  });
 
-/* ---------------------------------------
-   SIMPLE MODALS
---------------------------------------- */
+document
+  .getElementById("closePlayer")
+  .addEventListener("click",closePlayer);
 
-function openModal(title, content) {
-  $("#modalRoot").innerHTML = `
-    <div class="modal-backdrop" data-close-modal>
-      <section class="modal" role="dialog" aria-modal="true"
-               aria-label="${escapeHTML(title)}">
-        <div class="modal-header">
-          <h2>${escapeHTML(title)}</h2>
-          <button class="modal-close" data-action="close-modal"
-                  aria-label="Close">×</button>
-        </div>
-        ${content}
-      </section>
-    </div>
-  `;
-}
+document
+  .getElementById("playerHome")
+  .addEventListener("click",()=>{
 
-function closeModal() {
-  $("#modalRoot").innerHTML = "";
-}
+    closePlayer();
 
-function showAccountMessage(action) {
-  openModal(action, `
-    <p>This is the account interface preview.</p>
-    <p class="modal-note">
-      Real sign-in, account creation, and private playlists across
-      devices require an authentication service and database.
-      No account is created by this demo.
-    </p>
-    <button class="button button-primary full-width"
-            data-action="close-modal">Got it</button>
-  `);
-}
+    document
+      .getElementById("detailScreen")
+      .classList.remove("open");
 
-/* ---------------------------------------
-   CLICK HANDLING
---------------------------------------- */
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
 
-document.addEventListener("click", event => {
-  const pageButton = event.target.closest("[data-page]");
-  if (pageButton) {
-    event.preventDefault();
-    navigate(pageButton.dataset.page);
-    return;
-  }
+  });
 
-  const playButton = event.target.closest("[data-play]");
-  if (playButton) {
-    playSong(playButton.dataset.play);
-    return;
-  }
+document
+  .getElementById("bigPlay")
+  .addEventListener("click",()=>{
 
-  const favoriteButton = event.target.closest("[data-favorite]");
-  if (favoriteButton) {
-    toggleFavorite(favoriteButton.dataset.favorite);
-    return;
-  }
+    playing = !playing;
 
-  const collectionButton = event.target.closest("[data-collection]");
-  if (collectionButton) {
-    renderCollection(
-      collectionButton.dataset.name,
-      collectionButton.dataset.collection
+    updatePlayButtons();
+
+  });
+
+document
+  .getElementById("next")
+  .addEventListener("click",nextSong);
+
+document
+  .getElementById("previous")
+  .addEventListener("click",previousSong);
+
+document
+  .getElementById("shuffle")
+  .addEventListener("click",()=>{
+
+    shuffled = !shuffled;
+
+    document
+      .getElementById("shuffle")
+      .classList.toggle(
+        "active",
+        shuffled
+      );
+
+  });
+
+document
+  .getElementById("repeat")
+  .addEventListener("click",()=>{
+
+    repeated = !repeated;
+
+    document
+      .getElementById("repeat")
+      .classList.toggle(
+        "active",
+        repeated
+      );
+
+  });
+
+document
+  .getElementById("favorite")
+  .addEventListener("click",()=>{
+
+    favorite = !favorite;
+
+    const button =
+      document.getElementById("favorite");
+
+    button.textContent =
+      favorite
+        ? "♥ Favorited"
+        : "♡ Favorite";
+
+    button.classList.toggle(
+      "active",
+      favorite
     );
-    return;
-  }
 
-  const openPlaylistButton = event.target.closest("[data-open-playlist]");
-  if (openPlaylistButton) {
-    renderPlaylist(openPlaylistButton.dataset.openPlaylist);
-    return;
-  }
+  });
 
-  const addButton = event.target.closest("[data-add-to-playlist]");
-  if (addButton) {
-    addSongToPlaylist(
-      addButton.dataset.id,
-      addButton.dataset.addToPlaylist
+document
+  .getElementById("addPlaylist")
+  .addEventListener("click",()=>{
+
+    openModal("playlistModal");
+
+  });
+
+document
+  .getElementById("progress")
+  .addEventListener("input",function(){
+
+    const seconds =
+      Math.floor(
+        Number(this.value) * 2.22
+      );
+
+    document
+      .getElementById("currentTime")
+      .textContent =
+        Math.floor(seconds / 60) +
+        ":" +
+        String(seconds % 60)
+          .padStart(2,"0");
+
+  });
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+  .getElementById("searchButton")
+  .addEventListener("click",()=>{
+
+    openModal("searchModal");
+
+    setTimeout(()=>{
+
+      document
+        .getElementById("searchInput")
+        .focus();
+
+    },100);
+
+  });
+
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "input",
+    doSearch
+  );
+
+document
+  .getElementById("closeSearch")
+  .addEventListener("click",()=>{
+
+    closeModal("searchModal");
+
+  });
+
+/* =========================================================
+   AUTH BUTTONS
+========================================================= */
+
+document
+  .getElementById("authButton")
+  .addEventListener(
+    "click",
+    openAuth
+  );
+
+document
+  .getElementById("switchAuth")
+  .addEventListener("click",()=>{
+
+    authMode =
+      authMode === "signin"
+        ? "signup"
+        : "signin";
+
+    document
+      .getElementById("authTitle")
+      .textContent =
+        authMode === "signin"
+          ? "Sign In"
+          : "Create Account";
+
+    document
+      .getElementById("authDescription")
+      .textContent =
+        authMode === "signin"
+          ? "Sign in to your NigguneiChabad account."
+          : "Create your NigguneiChabad account.";
+
+    document
+      .getElementById("submitAuth")
+      .textContent =
+        authMode === "signin"
+          ? "Sign In"
+          : "Create Account";
+
+    document
+      .getElementById("switchAuth")
+      .textContent =
+        authMode === "signin"
+          ? "Create Account"
+          : "Sign In";
+
+    updateAuthFields();
+
+    setTimeout(()=>{
+
+      document
+        .getElementById(
+          authMode === "signup"
+            ? "authFirstName"
+            : "authEmail"
+        )
+        .focus();
+
+    },100);
+
+  });
+
+document
+  .getElementById("submitAuth")
+  .addEventListener(
+    "click",
+    submitAuth
+  );
+
+document
+  .getElementById("closeAuth")
+  .addEventListener("click",()=>{
+
+    closeModal("authModal");
+
+  });
+
+[
+  "authFirstName",
+  "authLastName",
+  "authPhone",
+  "authEmail",
+  "authPassword",
+  "authConfirmPassword"
+].forEach(id=>{
+
+  document
+    .getElementById(id)
+    .addEventListener(
+      "keydown",
+      event=>{
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          submitAuth();
+
+        }
+
+      }
     );
-    return;
-  }
 
-  const removeButton = event.target.closest("[data-remove-from-playlist]");
-  if (removeButton) {
-    removeSongFromPlaylist(
-      removeButton.dataset.id,
-      removeButton.dataset.removeFromPlaylist
+});
+
+/* =========================================================
+   PLAYLIST
+========================================================= */
+
+document
+  .getElementById("cancelPlaylist")
+  .addEventListener("click",()=>{
+
+    closeModal("playlistModal");
+
+  });
+
+document
+  .getElementById("savePlaylist")
+  .addEventListener("click",()=>{
+
+    const input =
+      document.getElementById("playlistName");
+
+    const name =
+      input.value.trim();
+
+    if(!name){
+
+      alert(
+        "Please enter a playlist name."
+      );
+
+      input.focus();
+
+      return;
+
+    }
+
+    playlists.push({
+
+      name:name,
+
+      songIndexes:[]
+
+    });
+
+    localStorage.setItem(
+      "nc_playlists",
+      JSON.stringify(playlists)
     );
-    return;
-  }
 
-  const actionButton = event.target.closest("[data-action]");
-  if (actionButton) {
-    const action = actionButton.dataset.action;
+    input.value = "";
 
-    if (action === "create-playlist") createPlaylist();
-    if (action === "delete-playlist") deletePlaylist(actionButton.dataset.id);
-    if (action === "close-modal") closeModal();
+    closeModal("playlistModal");
 
-    return;
-  }
+    renderPlaylists();
 
-  if (event.target.matches("[data-close-modal]")) {
-    closeModal();
-  }
-});
+  });
 
-$("#searchInput").addEventListener("input", event => {
-  searchTerm = event.target.value;
+document
+  .getElementById("playlistName")
+  .addEventListener("keydown",event=>{
 
-  if (currentPage !== "search") {
-    navigate("search");
-  } else {
-    renderSearch(searchTerm);
-  }
-});
+    if(event.key === "Enter"){
 
-$("#playPauseBtn").addEventListener("click", togglePlayback);
-$("#previousBtn").addEventListener("click", () => playNext(-1));
-$("#nextBtn").addEventListener("click", () => playNext(1));
+      event.preventDefault();
 
-$("#playerFavorite").addEventListener("click", () => {
-  if (currentSongId) toggleFavorite(currentSongId);
-});
+      document
+        .getElementById("savePlaylist")
+        .click();
 
-$("#signInBtn").addEventListener("click", () => {
-  showAccountMessage("Sign in");
-});
+    }
 
-$("#createAccountBtn").addEventListener("click", () => {
-  showAccountMessage("Create an account");
-});
+  });
 
-$("#expandPlayerBtn").addEventListener("click", () => {
-  const song = getCurrentSong();
+/* =========================================================
+   DETAIL
+========================================================= */
 
-  if (!song) {
-    showToast("Choose a niggun first.");
-    return;
-  }
+document
+  .getElementById("closeDetail")
+  .addEventListener("click",()=>{
 
-  openModal("Now playing", `
-    <div class="playlist-card-art">♫</div>
-    <h3>${escapeHTML(song.title)}</h3>
-    <p>${escapeHTML(song.artist)}</p>
-    <p class="modal-note">
-      Full-screen lyrics and song information can be added when
-      the song data is available.
-    </p>
-    <button class="button button-primary full-width"
-            data-action="close-modal">Close</button>
-  `);
-});
+    document
+      .getElementById("detailScreen")
+      .classList.remove("open");
 
-/* ---------------------------------------
-   START THE WEBSITE
---------------------------------------- */
+  });
 
-renderHome();
+/* =========================================================
+   SEE ALL
+========================================================= */
+
+document
+  .querySelectorAll(".see-all")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      openLibrary(
+        button.dataset.section
+      );
+
+    });
+
+  });
+
+document
+  .getElementById("closeLibrary")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("libraryScreen")
+      .classList.remove("open");
+
+  });
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderWeekly();
+renderComposers();
+renderTopChart();
+renderRecent();
+renderOfficialPlaylists();
+renderSingers();
+renderCategories();
+renderPlaylists();
+
+attachDynamicListeners();
+
+updateAuthUI();
+updateAuthFields();
