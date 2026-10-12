@@ -29,7 +29,6 @@ body{
   padding-bottom:96px;
   overflow-x:hidden;
 }
-body.page-locked{overflow:hidden;position:fixed;width:100%;}
 
 button,input{
   font:inherit;
@@ -82,11 +81,17 @@ input:focus-visible{
 }
 
 .logo-mark{
-  width:40px;
-  height:40px;
-  min-width:40px;
-  display:block;
-  object-fit:contain;
+  width:39px;
+  height:39px;
+  min-width:39px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#211b45,#8064ff);
+  color:white;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  letter-spacing:-1px;
+  box-shadow:0 5px 16px rgba(108,76,255,.22);
 }
 
 .logo-text{
@@ -1085,20 +1090,6 @@ main{
   aspect-ratio:1;
   height:auto;
 }
-/* Top 12 and Recently Listened See All pages stay compact: one song per row. */
-.library-grid.chart-list{display:flex;flex-direction:column;gap:8px;}
-.library-grid.chart-list .chart-row{width:100%;min-height:68px;padding:9px 12px;grid-template-columns:30px minmax(0,1fr) 40px;}
-.library-grid.chart-list .chart-title{font-size:13px;}
-.library-grid.chart-list .chart-artist{font-size:11px;}
-#searchModal.open{display:block;padding:0;background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;overflow-y:auto;align-items:stretch;justify-content:stretch;}
-#searchModal .modal{width:100%;max-width:none;min-height:100%;max-height:none;border-radius:0;box-shadow:none;padding:24px max(20px,calc((100vw - 900px)/2));overflow:visible;}
-#searchModal .modal-buttons{position:sticky;bottom:0;background:var(--surface);padding:12px 0;}
-.song-card-wrap{flex:0 0 170px;min-width:0;position:relative;}
-.song-card-wrap .music-card{width:100%;}
-.song-card-actions{display:flex;gap:6px;margin-top:7px;}
-.song-card-actions button,.add-song-btn{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:7px 10px;font-size:12px;color:var(--accent);font-weight:700;}
-@media(max-width:650px){.song-card-wrap{flex-basis:145px;}.library-grid.chart-list .chart-row{grid-template-columns:22px minmax(0,1fr) 34px;}}
-@media(min-width:1000px){.song-card-wrap{flex:initial;width:100%;}.song-card-wrap .music-card{width:100%;}}
 
 /* =========================
    MOBILE / IPHONE
@@ -1131,7 +1122,7 @@ main{
     width:35px;
     height:35px;
     min-width:35px;
-    object-fit:contain;
+    border-radius:10px;
   }
 
   .header-actions{
@@ -1398,249 +1389,5 @@ main{
 @media(min-width:651px){
   .modal-bg{
     align-items:center;
-  }
-}
-/* =========================
-   DESKTOP / COMPUTER
-========================= */
-@media (min-width: 1000px){
-  body{
-    padding-bottom:110px;
-  }
-
-  .header-inner{
-    max-width:1440px;
-    min-height:78px;
-    padding:0 38px;
-  }
-
-  .logo{
-    gap:12px;
-  }
-
-  .logo-mark{
-    width:46px;
-    height:46px;
-    min-width:46px;
-    border-radius:14px;
-    object-fit:contain;
-  }
-
-  .logo-text{
-    font-size:21px;
-  }
-
-  .header-actions{
-    gap:12px;
-  }
-
-  .icon-btn{
-    width:46px;
-    height:46px;
-    min-width:46px;
-  }
-
-  .auth-btn{
-    padding:12px 20px;
-    border-radius:24px;
-  }
-
-  main{
-    max-width:1440px;
-    padding:38px 38px 85px;
-  }
-
-  .intro{
-    margin:8px 0 42px;
-  }
-
-  .intro h1{
-    font-size:52px;
-  }
-
-  .intro p{
-    font-size:16px;
-  }
-
-  .section{
-    margin-top:52px;
-  }
-
-  .section-header{
-    margin-bottom:18px;
-  }
-
-  .section-header h2{
-    font-size:24px;
-  }
-
-  .see-all{
-    font-size:14px;
-  }
-
-  /* Seven items fit cleanly across the computer homepage. */
-  .horizontal{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:18px;
-    overflow:visible;
-    padding:3px 1px 8px;
-  }
-
-  .music-card{
-    width:100%;
-    min-width:0;
-    flex:initial;
-  }
-
-  .art{
-    width:100%;
-    height:auto;
-    aspect-ratio:1;
-    border-radius:18px;
-  }
-
-  .card-title{
-    font-size:15px;
-  }
-
-  .card-subtitle{
-    font-size:13px;
-  }
-
-  /* Three-column chart, with the 12 songs arranged 3 + 3 + 3 + 3. */
-  .chart{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .chart-row{
-    min-height:88px;
-    padding:13px 14px;
-    grid-template-columns:30px minmax(0,1fr) 40px;
-    gap:11px;
-    border-radius:18px;
-  }
-
-  .chart-mini-art{
-    width:50px;
-    height:50px;
-    min-width:50px;
-  }
-
-  .chart-title{
-    font-size:13px;
-  }
-
-  .chart-artist{
-    font-size:11px;
-  }
-
-  .play-small{
-    width:36px;
-    height:36px;
-  }
-
-  .playlist-card,
-  .create-playlist{
-    flex:initial;
-    width:100%;
-    min-width:0;
-  }
-
-  .playlist-art,
-  .create-playlist{
-    width:100%;
-    height:155px;
-  }
-
-  .playlist-label{
-    font-size:19px;
-  }
-
-  .category-card{
-    flex:initial;
-    width:100%;
-    min-width:0;
-    height:125px;
-  }
-
-  .library-content{
-    max-width:1440px;
-    padding:34px 38px 85px;
-  }
-
-  .library-grid{
-    grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:18px;
-  }
-
-  .bottom-player{
-    left:50%;
-    right:auto;
-    transform:translateX(-50%);
-    width:min(1100px,calc(100% - 80px));
-    bottom:20px;
-    border-radius:20px;
-    padding:12px 14px;
-  }
-
-  .mini-art{
-    width:54px;
-    height:54px;
-    min-width:54px;
-  }
-
-  .mini-title{
-    font-size:14px;
-  }
-
-  .mini-artist{
-    font-size:12px;
-  }
-
-  .mini-play{
-    width:46px;
-    height:46px;
-    min-width:46px;
-  }
-
-  .player-content{
-    max-width:650px;
-    padding:40px 30px 80px;
-  }
-
-  .big-art{
-    width:min(42vw,430px);
-    margin-top:22px;
-  }
-
-  .player-title{
-    font-size:31px;
-  }
-
-  .detail-content{
-    max-width:1200px;
-    padding:38px 38px 90px;
-  }
-
-  .detail-heading-art{
-    width:145px;
-    height:145px;
-    min-width:145px;
-  }
-}
-
-@media (min-width: 1300px){
-  .horizontal{
-    gap:20px;
-  }
-
-  .chart{
-    gap:16px;
-  }
-
-  .section{
-    margin-top:58px;
   }
 }
