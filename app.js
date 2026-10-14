@@ -350,6 +350,12 @@ let playlists =
    HELPERS
 ========================================================= */
 
+function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>\"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '\"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+
 function getArtist(id){
   return artists.find(a => a.id === id);
 }
@@ -572,13 +578,19 @@ function chartRow(song,index){
 ========================================================= */
 
 function renderWeekly(){
-
-  document.getElementById("weeklySongs").innerHTML =
-    songs
-      .slice(0,7)
-      .map((song,i)=>songCard(song,i))
-      .join("");
-
+  // One featured niggun only; no seven-song weekly carousel.
+  const song = songs[0];
+  if(!song) return;
+  const title = document.getElementById("featuredNiggunHeading");
+  const meta = document.getElementById("featuredNiggunMeta");
+  const art = document.getElementById("featuredNiggunArt");
+  if(title) title.textContent = song.title;
+  if(meta) meta.textContent = `${artistName(song.artistId)} · Niggun of the Week`;
+  if(art) art.textContent = song.initials || "♪";
+  const play = document.getElementById("playFeaturedNiggun");
+  if(play) play.onclick = () => playSong(songs.indexOf(song));
+  const add = document.getElementById("featuredAddPlaylist");
+  if(add) add.onclick = () => openAddToPlaylist(songs.indexOf(song));
 }
 
 function renderComposers(){
@@ -702,33 +714,39 @@ function renderPlaylists(){
   `;
 
   html += playlists.map(p=>`
-
-    <button
-      class="playlist-card"
-      type="button"
-      data-playlist="${encodeURIComponent(p.name)}"
-    >
-
-      <div class="playlist-art">
-
-        <div class="line"></div>
-        <div class="line2"></div>
-
-        <div class="playlist-label">
-          ${p.name}
+    <div class="playlist-card-wrap">
+      <button class="playlist-card" type="button" data-playlist="${encodeURIComponent(p.name)}">
+        <div class="playlist-art">
+          <div class="line"></div><div class="line2"></div>
+          <div class="playlist-label">${escapeHtml(p.name)}</div>
+          <div class="playlist-meta">${p.songIndexes?.length || 0} songs</div>
         </div>
-
-        <div class="playlist-meta">
-          ${p.songIndexes?.length || 0} songs
-        </div>
-
-      </div>
-
-    </button>
-
+      </button>
+      <button class="playlist-menu" type="button" aria-label="Edit or delete ${escapeHtml(p.name)}" data-playlist-menu="${encodeURIComponent(p.name)}">•••</button>
+    </div>
   `).join("");
 
   container.innerHTML = html;
+  container.querySelectorAll("[data-playlist-menu]").forEach(button=>button.addEventListener("click",event=>{
+    event.stopPropagation();
+    const oldName = decodeURIComponent(button.dataset.playlistMenu);
+    const choice = prompt(`Playlist: ${oldName}\nType R to rename or D to delete.`, "");
+    if(choice === null) return;
+    const action = choice.trim().toLowerCase();
+    const playlist = playlists.find(item=>item.name===oldName);
+    if(!playlist) return;
+    if(action === "r") {
+      const nextName = prompt("Enter the new playlist name:", oldName);
+      if(!nextName || !nextName.trim()) return;
+      const cleanName = nextName.trim();
+      if(playlists.some(item=>item!==playlist && item.name.toLowerCase()===cleanName.toLowerCase())) { alert("A playlist with that name already exists."); return; }
+      playlist.name = cleanName; persistPlaylists(); renderPlaylists();
+    } else if(action === "d") {
+      if(confirm(`Delete the playlist “${oldName}”? This cannot be undone.`)) {
+        playlists = playlists.filter(item=>item!==playlist); persistPlaylists(); renderPlaylists();
+      }
+    }
+  }));
 
   document
     .getElementById("createPlaylistButton")
@@ -1484,12 +1502,8 @@ function openLibrary(section){
 
   }else if(section === "Singers"){
 
-    html =
-      artists
-        .map((artist,i)=>
-          singerCard(artist,i)
-        )
-        .join("");
+    grid.classList.add("singer-carousel");
+    html = artists.map((artist,i)=>singerCard(artist,i)).join("");
 
   }else if(section === "Categories"){
 
@@ -1589,6 +1603,7 @@ function openLibrary(section){
   }
 
   if(section !== "Top 12 of the Week" && section !== "Recently Listened To" && section !== "Niggunim of the Week") grid.classList.remove("chart-list");
+  if(section !== "Singers") grid.classList.remove("singer-carousel");
   grid.innerHTML = html;
 
   lockBackground();
@@ -2125,10 +2140,12 @@ document
    SEARCH
 ========================================================= */
 
+let searchReturnScroll = 0;
 document
   .getElementById("searchButton")
   .addEventListener("click",()=>{
 
+    searchReturnScroll = window.scrollY || window.pageYOffset || savedBodyScroll || 0;
     openModal("searchModal");
 
     setTimeout(()=>{
@@ -2151,9 +2168,8 @@ document
 document
   .getElementById("closeSearch")
   .addEventListener("click",()=>{
-
     closeModal("searchModal");
-
+    requestAnimationFrame(()=>window.scrollTo({top:searchReturnScroll,behavior:"auto"}));
   });
 
 /* =========================================================
