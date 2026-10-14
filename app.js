@@ -1,3 +1,5 @@
+
+
 /* =========================================================
    DATA
 ========================================================= */
@@ -436,25 +438,19 @@ function artistArtHTML(artist,index=0){
 ========================================================= */
 
 function songCard(song,index){
-
+  const songIndex = songs.indexOf(song);
   return `
-    <button
-      class="music-card"
-      type="button"
-      data-song="${songs.indexOf(song)}"
-    >
-
-      ${artHTML(song,index)}
-
-      <div class="card-title">
-        ${song.title}
+    <div class="song-card-wrap">
+      <button class="music-card" type="button" data-song="${songIndex}">
+        ${artHTML(song,index)}
+        <div class="card-title">${song.title}</div>
+        <div class="card-subtitle">${artistName(song.artistId)}</div>
+      </button>
+      <div class="song-card-actions">
+        <button type="button" data-add-song="${songIndex}">＋ Add to Playlist</button>
+        <button type="button" data-favorite-song="${songIndex}">♡ Favorite</button>
       </div>
-
-      <div class="card-subtitle">
-        ${artistName(song.artistId)}
-      </div>
-
-    </button>
+    </div>
   `;
 }
 
@@ -500,24 +496,12 @@ function composerCard(composer,index){
 ========================================================= */
 
 function singerCard(artist,index){
-
+  const initials = artist.name.split(" ").map(x=>x[0]).join("").slice(0,2);
   return `
-    <button
-      class="music-card"
-      type="button"
-      data-artist="${artist.id}"
-    >
-
-      ${artistArtHTML(artist,index)}
-
-      <div class="card-title">
-        ${artist.name}
-      </div>
-
-      <div class="card-subtitle">
-        Singer
-      </div>
-
+    <button class="singer-row" type="button" data-artist="${artist.id}">
+      <span class="singer-avatar" aria-hidden="true">${initials}</span>
+      <span class="singer-copy"><strong>${artist.name}</strong><span>Singer</span></span>
+      <span class="singer-chevron" aria-hidden="true">›</span>
     </button>
   `;
 }
@@ -591,7 +575,7 @@ function renderWeekly(){
 
   document.getElementById("weeklySongs").innerHTML =
     songs
-      .slice(0,6)
+      .slice(0,7)
       .map((song,i)=>songCard(song,i))
       .join("");
 
@@ -626,37 +610,21 @@ function renderTopChart(){
 }
 
 function getRecentSongs(){
-
   const result = [];
-
   recentSongIndexes.forEach(index=>{
-
     const song = songs[index];
-
-    if(song && !result.includes(song)){
-      result.push(song);
-    }
-
+    if(song && !result.includes(song)) result.push(song);
   });
-
-  songs.forEach(song=>{
-
-    if(result.length < 12 &&
-       !result.includes(song)){
-
-      result.push(song);
-
-    }
-
-  });
-
   return result.slice(0,12);
 }
 
 function renderRecent(){
 
+  const recent = getRecentSongs();
+  const displaySongs = recent.length ? recent : songs.slice(0,12);
   document.getElementById("recentChart").innerHTML =
-    getRecentSongs()
+    displaySongs
+      .slice(0,12)
       .map((song,i)=>chartRow(song,i))
       .join("");
 
@@ -738,6 +706,7 @@ function renderPlaylists(){
     <button
       class="playlist-card"
       type="button"
+      data-playlist="${encodeURIComponent(p.name)}"
     >
 
       <div class="playlist-art">
@@ -886,6 +855,7 @@ function openPlayer(){
 
   if(!songs[currentSongIndex]) return;
 
+  lockBackground();
   document
     .getElementById("playerScreen")
     .classList.add("open");
@@ -893,11 +863,8 @@ function openPlayer(){
 }
 
 function closePlayer(){
-
-  document
-    .getElementById("playerScreen")
-    .classList.remove("open");
-
+  document.getElementById("playerScreen").classList.remove("open");
+  unlockBackground();
 }
 
 function nextSong(){
@@ -963,6 +930,7 @@ function openDetail(title,subheading,art,html){
     .getElementById("detailSongs")
     .innerHTML = html;
 
+  lockBackground();
   document
     .getElementById("detailScreen")
     .classList.add("open");
@@ -1066,7 +1034,7 @@ function openAlbum(id){
     getArtist(album.artistId);
 
   const html =
-    album.songs.map(songIndex=>{
+    `<button type="button" class="primary" data-add-album="${album.id}" style="margin-bottom:12px">＋ Add Album to Playlist</button>` + album.songs.map(songIndex=>{
 
       const song =
         songs[songIndex];
@@ -1473,6 +1441,15 @@ function doSearch(){
    SEE ALL
 ========================================================= */
 
+function openUserPlaylist(name){
+  const playlist=playlists.find(p=>p.name===name); if(!playlist)return;
+  const indexes=Array.isArray(playlist.songIndexes)?playlist.songIndexes:[];
+  const html=indexes.map((idx,i)=>songs[idx]?chartRow(songs[idx],i):"").join("") || `<p style="color:#777">This playlist is empty. Use Add to Playlist on a song or album to add music.</p>`;
+  document.getElementById("libraryTitle").textContent=name;
+  const grid=document.getElementById("libraryGrid");grid.classList.add("chart-list");grid.innerHTML=html;
+  lockBackground();document.getElementById("libraryScreen").classList.add("open");attachDynamicListeners();
+}
+
 function openLibrary(section){
 
   document
@@ -1490,15 +1467,11 @@ function openLibrary(section){
     section === "Niggunim of the Week"
   ){
 
-    const list =
-      section === "Recently Listened To"
-        ? getRecentSongs()
-        : songs.slice(0,12);
-
-    html =
-      list.map((song,i)=>
-        songCard(song,i)
-      ).join("");
+    const list = section === "Recently Listened To"
+      ? getRecentSongs()
+      : (typeof getWeeklyTopSongs === "function" ? getWeeklyTopSongs() : songs.slice(0,12));
+    grid.classList.add("chart-list");
+    html = list.map((song,i)=>chartRow(song,i)).join("") || `<p style="color:#777">No songs have been played yet.</p>`;
 
   }else if(section === "Composers"){
 
@@ -1615,8 +1588,10 @@ function openLibrary(section){
 
   }
 
+  if(section !== "Top 12 of the Week" && section !== "Recently Listened To" && section !== "Niggunim of the Week") grid.classList.remove("chart-list");
   grid.innerHTML = html;
 
+  lockBackground();
   document
     .getElementById("libraryScreen")
     .classList.add("open");
@@ -1629,20 +1604,60 @@ function openLibrary(section){
    MODALS
 ========================================================= */
 
-function openModal(id){
-
-  document
-    .getElementById(id)
-    .classList.add("open");
-
+let savedBodyScroll = 0;
+function lockBackground(){
+  if(!document.body.classList.contains("page-locked")){
+    savedBodyScroll = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = `-${savedBodyScroll}px`;
+    document.body.classList.add("page-locked");
+  }
 }
-
+function unlockBackground(){
+  const anyOpen = document.querySelector(".library-screen.open,.detail-screen.open,.player-screen.open,.modal-bg.open");
+  if(!anyOpen && document.body.classList.contains("page-locked")){
+    document.body.classList.remove("page-locked");
+    document.body.style.top = "";
+    window.scrollTo(0,savedBodyScroll);
+  }
+}
+let pendingSongIndex = null;
+function openAddToPlaylist(songIndex){
+  const selectedSongIndexes = (Array.isArray(songIndex) ? songIndex : [Number(songIndex)]).map(Number).filter(i=>songs[i]);
+  pendingSongIndex = selectedSongIndexes[0] ?? null;
+  const modal = document.getElementById("playlistModal");
+  const title = modal.querySelector("h2");
+  const description = modal.querySelector("p");
+  const input = document.getElementById("playlistName");
+  const save = document.getElementById("savePlaylist");
+  const cancel = document.getElementById("cancelPlaylist");
+  title.textContent = "Add to Playlist";
+  description.textContent = "Choose an existing playlist or create a new one.";
+  input.style.display = "none";
+  let chooser = document.getElementById("playlistChooser");
+  if(!chooser){ chooser = document.createElement("div"); chooser.id = "playlistChooser"; chooser.style.marginTop = "16px"; input.parentNode.insertBefore(chooser,input); }
+  chooser.style.display = "block";
+  chooser.innerHTML = (playlists.length ? playlists.map((p,i)=>`<button type="button" class="search-result" data-choose-playlist="${i}"><span class="search-result-info"><span class="search-result-title">${p.name}</span><span class="search-result-sub">${(p.songIndexes||[]).length} songs</span></span></button>`).join("") : `<p>You don't have a playlist yet.</p>`) + `<button type="button" class="primary" id="createPlaylistFromChooser" style="width:100%;margin-top:12px">＋ Create New Playlist</button>`;
+  save.style.display = "none";
+  chooser.querySelector("#createPlaylistFromChooser").addEventListener("click",()=>{ input.style.display="block"; chooser.style.display="none"; title.textContent="Create Playlist"; description.textContent="The selected music will be added to your new playlist."; save.textContent="Create Playlist"; save.style.display="block"; input.focus(); });
+  cancel.textContent = "Close";
+  chooser.querySelectorAll("[data-choose-playlist]").forEach(b=>b.addEventListener("click",()=>{ const pl=playlists[Number(b.dataset.choosePlaylist)]; if(!pl.songIndexes) pl.songIndexes=[]; selectedSongIndexes.forEach(i=>{if(!pl.songIndexes.includes(i))pl.songIndexes.push(i);}); persistPlaylists(); closeModal("playlistModal"); renderPlaylists(); alert("Added to " + pl.name); }));
+  openModal("playlistModal");
+}
+function persistPlaylists(){localStorage.setItem("nc_playlists",JSON.stringify(playlists));}
+function openModal(id){
+  lockBackground();
+  if(id === "playlistModal" && pendingSongIndex === null){
+    const modal=document.getElementById(id); modal.querySelector("h2").textContent="Create Playlist"; modal.querySelector("p").textContent="Your playlist can exist even before you add songs.";
+    document.getElementById("playlistName").style.display="block";
+    const chooser=document.getElementById("playlistChooser"); if(chooser) chooser.style.display="none";
+    document.getElementById("savePlaylist").textContent="Create Playlist";
+    document.getElementById("savePlaylist").style.display="block";
+  }
+  document.getElementById(id).classList.add("open");
+}
 function closeModal(id){
-
-  document
-    .getElementById(id)
-    .classList.remove("open");
-
+  document.getElementById(id).classList.remove("open");
+  unlockBackground();
 }
 
 /* =========================================================
@@ -1878,8 +1893,23 @@ function attachDynamicListeners(){
 
     });
 
-  document
-    .querySelectorAll("[data-artist]")
+  document.querySelectorAll("[data-playlist]").forEach(button=>{
+    if(button.dataset.listenerAttached) return; button.dataset.listenerAttached="1";
+    button.addEventListener("click",()=>openUserPlaylist(decodeURIComponent(button.dataset.playlist)));
+  });
+  document.querySelectorAll("[data-add-album]").forEach(button=>{
+    if(button.dataset.listenerAttached) return; button.dataset.listenerAttached="1";
+    button.addEventListener("click",event=>{event.stopPropagation();const album=getAlbum(button.dataset.addAlbum);if(album)openAddToPlaylist(album.songs);});
+  });
+  document.querySelectorAll("[data-add-song]").forEach(button=>{
+    if(button.dataset.listenerAttached) return; button.dataset.listenerAttached="1";
+    button.addEventListener("click",event=>{event.stopPropagation();openAddToPlaylist(button.dataset.addSong);});
+  });
+  document.querySelectorAll("[data-favorite-song]").forEach(button=>{
+    if(button.dataset.listenerAttached) return; button.dataset.listenerAttached="1";
+    button.addEventListener("click",event=>{event.stopPropagation();const idx=Number(button.dataset.favoriteSong);toggleFavoriteSong(idx);const fav=ensureFavoritesPlaylist().songIndexes.includes(idx);button.textContent=fav?"♥ Favorited":"♡ Favorite";});
+  });
+  document.querySelectorAll("[data-artist]")
     .forEach(button=>{
 
       if(button.dataset.listenerAttached) return;
@@ -1939,14 +1969,17 @@ document
     document
       .getElementById("libraryScreen")
       .classList.remove("open");
+    unlockBackground();
 
     document
       .getElementById("detailScreen")
       .classList.remove("open");
+    unlockBackground();
 
     document
       .getElementById("playerScreen")
       .classList.remove("open");
+    unlockBackground();
 
     window.scrollTo({
       top:0,
@@ -1992,6 +2025,7 @@ document
     document
       .getElementById("detailScreen")
       .classList.remove("open");
+    unlockBackground();
 
     window.scrollTo({
       top:0,
@@ -2048,34 +2082,25 @@ document
 
   });
 
-document
-  .getElementById("favorite")
-  .addEventListener("click",()=>{
-
-    favorite = !favorite;
-
-    const button =
-      document.getElementById("favorite");
-
-    button.textContent =
-      favorite
-        ? "♥ Favorited"
-        : "♡ Favorite";
-
-    button.classList.toggle(
-      "active",
-      favorite
-    );
-
-  });
+function ensureFavoritesPlaylist(){
+  let p=playlists.find(x=>x.name==="My Favorites");
+  if(!p){p={name:"My Favorites",songIndexes:[]};playlists.unshift(p);}
+  if(!Array.isArray(p.songIndexes))p.songIndexes=[];
+  return p;
+}
+function toggleFavoriteSong(index){
+  const p=ensureFavoritesPlaylist();
+  const pos=p.songIndexes.indexOf(Number(index));
+  if(pos>=0)p.songIndexes.splice(pos,1);else p.songIndexes.push(Number(index));
+  persistPlaylists(); renderPlaylists();
+  favorite=p.songIndexes.includes(Number(currentSongIndex));
+  const b=document.getElementById("favorite"); if(b){b.textContent=favorite?"♥ Favorited":"♡ Favorite";b.classList.toggle("active",favorite);}
+}
+document.getElementById("favorite").addEventListener("click",()=>toggleFavoriteSong(currentSongIndex));
 
 document
   .getElementById("addPlaylist")
-  .addEventListener("click",()=>{
-
-    openModal("playlistModal");
-
-  });
+  .addEventListener("click",()=>openAddToPlaylist(currentSongIndex));
 
 document
   .getElementById("progress")
@@ -2245,9 +2270,11 @@ document
 document
   .getElementById("cancelPlaylist")
   .addEventListener("click",()=>{
-
+    pendingSongIndex = null;
+    document.getElementById("playlistName").style.display="block";
+    const chooser=document.getElementById("playlistChooser"); if(chooser) chooser.style.display="none";
+    document.getElementById("savePlaylist").style.display="block";
     closeModal("playlistModal");
-
   });
 
 document
@@ -2272,18 +2299,16 @@ document
 
     }
 
-    playlists.push({
-
-      name:name,
-
-      songIndexes:[]
-
-    });
-
-    localStorage.setItem(
-      "nc_playlists",
-      JSON.stringify(playlists)
-    );
+    const created = {name:name,songIndexes:[]};
+    if(pendingSongIndex !== null && songs[pendingSongIndex]) created.songIndexes.push(pendingSongIndex);
+    playlists.push(created);
+    persistPlaylists();
+    pendingSongIndex = null;
+    document.getElementById("playlistName").style.display="block";
+    const chooser=document.getElementById("playlistChooser"); if(chooser) chooser.style.display="none";
+    document.getElementById("playlistModal").querySelector("h2").textContent="Create Playlist";
+    document.getElementById("playlistModal").querySelector("p").textContent="Your playlist can exist even before you add songs.";
+    document.getElementById("savePlaylist").style.display="block";
 
     input.value = "";
 
@@ -2320,6 +2345,7 @@ document
     document
       .getElementById("detailScreen")
       .classList.remove("open");
+    unlockBackground();
 
   });
 
@@ -2348,8 +2374,23 @@ document
     document
       .getElementById("libraryScreen")
       .classList.remove("open");
+    unlockBackground();
 
   });
+
+document.getElementById("createAccountButton").addEventListener("click",()=>{
+  authMode = "signup";
+  document.getElementById("authTitle").textContent = "Create Account";
+  document.getElementById("authDescription").textContent = "Create your NigguneiChabad account.";
+  document.getElementById("submitAuth").textContent = "Create Account";
+  document.getElementById("switchAuth").textContent = "Sign In";
+  openAuth();
+});
+
+document.getElementById("playerChabadButton").addEventListener("click",()=>{
+  document.getElementById("playerScreen").classList.remove("open");
+  openLibrary("Chabad Niggunim Playlists");
+});
 
 /* =========================================================
    INITIALIZE
@@ -2368,3 +2409,4 @@ attachDynamicListeners();
 
 updateAuthUI();
 updateAuthFields();
+
