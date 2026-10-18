@@ -1887,26 +1887,3 @@ button:focus-visible,input:focus-visible{outline:3px solid rgba(98,70,229,.28);o
   .modal{padding:23px 18px;border-radius:22px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-
-/* Final polish: single featured niggun, horizontal singer rails, full-width desktop. */
-.intro{display:none!important}
-.featured-niggun{display:flex;align-items:center;justify-content:space-between;gap:28px;position:relative;overflow:hidden;margin:5px 0 34px;padding:30px 36px;border-radius:26px;background:linear-gradient(115deg,#30216e 0%,#5b42cf 55%,#8b77ef 100%);color:#fff;box-shadow:0 15px 38px rgba(66,44,157,.14);min-height:170px}
-.featured-copy{position:relative;z-index:1;min-width:0}
-.featured-kicker{font-size:11px;letter-spacing:1.6px;font-weight:850;color:#e4ddff;margin-bottom:10px}
-.featured-niggun h1{font-size:clamp(25px,3vw,38px);line-height:1.1;letter-spacing:-1px;font-weight:850;overflow-wrap:anywhere}
-#featuredNiggunMeta{margin-top:9px;color:rgba(255,255,255,.82);font-size:14px}
-.featured-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
-.featured-actions button{border-radius:999px;padding:10px 15px;font-weight:800}
-.featured-actions .secondary{background:rgba(255,255,255,.14);color:white;border:1px solid rgba(255,255,255,.35)}
-.featured-art{display:grid;place-items:center;flex:0 0 112px;width:112px;height:112px;border-radius:24px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);font-size:44px;font-weight:900;color:#fff}
-#singers{display:flex;flex-direction:row;gap:14px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 14px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
-#singers .singer-row{flex:0 0 210px;width:210px;min-width:210px;min-height:92px;scroll-snap-align:start}
-.library-grid.singer-carousel{display:flex;flex-direction:row;gap:14px;overflow-x:auto;overflow-y:hidden;align-items:stretch;padding:4px 2px 14px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
-.library-grid.singer-carousel .singer-row{flex:0 0 230px;width:230px;min-width:230px;min-height:96px;scroll-snap-align:start}
-.playlist-card-wrap{position:relative;flex:0 0 190px;width:190px}
-.playlist-card-wrap .playlist-card{width:100%}
-.playlist-menu{position:absolute;right:9px;top:8px;width:31px;height:31px;border-radius:50%;background:#fff;color:#5b43cf;border:1px solid #e5e0f4;font-weight:900;letter-spacing:1px;z-index:2}
-.playlist-menu:hover{background:#eee9ff}
-main{width:100%;max-width:none;padding-left:clamp(24px,3vw,52px);padding-right:clamp(24px,3vw,52px)}
-@media(min-width:1500px){main{padding-left:64px;padding-right:64px}.library-content{max-width:none;padding-left:clamp(28px,3vw,64px);padding-right:clamp(28px,3vw,64px)}}
-@media(max-width:650px){.featured-niggun{margin:0 0 28px;padding:22px 19px;border-radius:20px;min-height:150px;gap:12px}.featured-art{flex-basis:72px;width:72px;height:72px;border-radius:18px;font-size:30px}.featured-niggun h1{font-size:25px;letter-spacing:-.6px}.featured-kicker{font-size:9px;letter-spacing:1px}.featured-actions{margin-top:12px}.featured-actions button{font-size:11px;padding:9px 11px}#singers .singer-row{flex-basis:190px;width:190px;min-width:190px}.library-grid.singer-carousel .singer-row{flex-basis:200px;width:200px;min-width:200px}.playlist-card-wrap{flex-basis:164px;width:164px}}
