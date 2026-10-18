@@ -4,13 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#faf9ff">
-  <meta name="description" content="Discover Chabad niggunim, singers, composers, and playlists."><title>NigguneiChabad — Chabad Music</title>
+  <meta name="description" content="Discover Chabad niggunim, singers, composers, and playlists.">
+  <title>NigguneiChabad — Chabad Music</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
     <button class="brand" data-home aria-label="NigguneiChabad home">
-      <span class="brand-mark" aria-hidden="true">♪</span><span>NigguneiChabad</span>
+      <span class="brand-mark" aria-hidden="true">♪</span>
+      <span>NigguneiChabad</span>
     </button>
     <div class="top-actions">
       <button class="icon-button" id="searchOpen" aria-label="Search">⌕</button>
@@ -33,80 +35,147 @@
         </div>
       </div>
       <div class="featured-art" aria-label="Abstract purple music artwork">
-        <div class="art-ring ring-one"></div><div class="art-ring ring-two"></div>
+        <div class="art-ring ring-one"></div>
+        <div class="art-ring ring-two"></div>
         <span class="music-note">♪</span>
       </div>
     </section>
-<section class="section">
-      <div class="section-heading"><h2>Composers</h2><button class="see-all" data-view="composers">See All <span>→</span></button></div>
+
+    <section class="section">
+      <div class="section-heading">
+        <h2>Composers</h2>
+        <button class="see-all" data-view="composers">See All <span>→</span></button>
+      </div>
       <div class="horizontal" id="composerRow"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>Top 12 of the Week</h2><button class="see-all" data-view="top">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>Top 12 of the Week</h2>
+        <button class="see-all" data-view="top">See All <span>→</span></button>
+      </div>
       <div class="chart" id="topChart"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>Chabad Niggunim Playlists</h2><button class="see-all" data-view="official">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>Chabad Niggunim Playlists</h2>
+        <button class="see-all" data-view="official">See All <span>→</span></button>
+      </div>
       <div class="horizontal" id="officialRow"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>My Own Playlists</h2><button class="see-all" data-view="playlists">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>My Own Playlists</h2>
+        <button class="see-all" data-view="playlists">See All <span>→</span></button>
+      </div>
       <div class="horizontal" id="playlistRow"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>Singers</h2><button class="see-all" data-view="singers">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>Singers</h2>
+        <button class="see-all" data-view="singers">See All <span>→</span></button>
+      </div>
       <div class="horizontal" id="singerRow"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>Recently Listened To</h2><button class="see-all" data-view="recent">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>Recently Listened To</h2>
+        <button class="see-all" data-view="recent">See All <span>→</span></button>
+      </div>
       <div class="chart" id="recentChart"></div>
     </section>
+
     <section class="section">
-      <div class="section-heading"><h2>Categories</h2><button class="see-all" data-view="categories">See All <span>→</span></button></div>
+      <div class="section-heading">
+        <h2>Categories</h2>
+        <button class="see-all" data-view="categories">See All <span>→</span></button>
+      </div>
       <div class="horizontal" id="categoryRow"></div>
     </section>
-    <footer class="footer">NigguneiChabad <span>Made for the love of niggunim.</span></footer>
+
+    <footer class="footer">
+      NigguneiChabad <span>Made for the love of niggunim.</span>
+    </footer>
   </main>
 
   <main id="detailScreen" class="screen detail-screen hidden">
-    <div class="detail-toolbar"><button class="back-button" id="backHome">← Home</button><span class="eyebrow">NIGGUNEICHABAD</span></div>
-    <div class="section-heading detail-heading"><h1 id="detailTitle">Songs</h1><span id="detailCount" class="muted"></span></div>
+    <div class="detail-toolbar">
+      <button class="back-button" id="backHome">← Home</button>
+      <span class="eyebrow">NIGGUNEICHABAD</span>
+    </div>
+    <div class="section-heading detail-heading">
+      <h1 id="detailTitle">Songs</h1>
+      <span id="detailCount" class="muted"></span>
+    </div>
     <div id="detailContent"></div>
   </main>
 
   <div class="overlay hidden" id="searchOverlay" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
     <div class="dialog search-dialog">
-      <div class="dialog-head"><h2 id="searchTitle">Search</h2><button class="close-button" data-close-search aria-label="Close search">×</button></div>
-      <label class="search-field"><span>⌕</span><input id="searchInput" type="search" placeholder="Search niggunim, singers, composers…" autocomplete="off"></label>
-      <div id="searchResults" class="dialog-results"><p class="muted">Start typing to find music.</p></div>
+      <div class="dialog-head">
+        <h2 id="searchTitle">Search</h2>
+        <button class="close-button" data-close-search aria-label="Close search">×</button>
+      </div>
+      <label class="search-field">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search niggunim, singers, composers…" autocomplete="off">
+      </label>
+      <div id="searchResults" class="dialog-results">
+        <p class="muted">Start typing to find music.</p>
+      </div>
     </div>
   </div>
 
   <div class="overlay hidden" id="playlistOverlay" role="dialog" aria-modal="true" aria-labelledby="playlistDialogTitle">
     <div class="dialog">
-      <div class="dialog-head"><h2 id="playlistDialogTitle">Add to Playlist</h2><button class="close-button" data-close-playlist aria-label="Close">×</button></div>
+      <div class="dialog-head">
+        <h2 id="playlistDialogTitle">Add to Playlist</h2>
+        <button class="close-button" data-close-playlist aria-label="Close">×</button>
+      </div>
       <div id="playlistDialogContent"></div>
     </div>
   </div>
 
   <div class="overlay hidden" id="createOverlay" role="dialog" aria-modal="true" aria-labelledby="createTitle">
     <div class="dialog">
-      <div class="dialog-head"><h2 id="createTitle">Create a Playlist</h2><button class="close-button" data-close-create aria-label="Close">×</button></div>
-      <form id="createPlaylistForm"><label class="field-label" for="playlistName">Playlist name</label><input class="text-input" id="playlistName" maxlength="60" required placeholder="e.g. My favorite niggunim"><button class="primary-button full-button" type="submit">Create Playlist</button></form>
+      <div class="dialog-head">
+        <h2 id="createTitle">Create a Playlist</h2>
+        <button class="close-button" data-close-create aria-label="Close">×</button>
+      </div>
+      <form id="createPlaylistForm">
+        <label class="field-label" for="playlistName">Playlist name</label>
+        <input class="text-input" id="playlistName" maxlength="60" required placeholder="e.g. My favorite niggunim">
+        <button class="primary-button full-button" type="submit">Create Playlist</button>
+      </form>
     </div>
   </div>
 
   <div class="overlay hidden" id="editOverlay" role="dialog" aria-modal="true" aria-labelledby="editTitle">
     <div class="dialog">
-      <div class="dialog-head"><h2 id="editTitle">Edit Playlist</h2><button class="close-button" data-close-edit aria-label="Close">×</button></div>
-      <form id="editPlaylistForm"><label class="field-label" for="editPlaylistName">Playlist name</label><input class="text-input" id="editPlaylistName" maxlength="60" required><input type="hidden" id="editPlaylistId"><button class="primary-button full-button" type="submit">Save Changes</button></form>
+      <div class="dialog-head">
+        <h2 id="editTitle">Edit Playlist</h2>
+        <button class="close-button" data-close-edit aria-label="Close">×</button>
+      </div>
+      <form id="editPlaylistForm">
+        <label class="field-label" for="editPlaylistName">Playlist name</label>
+        <input class="text-input" id="editPlaylistName" maxlength="60" required>
+        <input type="hidden" id="editPlaylistId">
+        <button class="primary-button full-button" type="submit">Save Changes</button>
+      </form>
       <button class="danger-button full-button" id="deletePlaylistButton" type="button">Delete Playlist</button>
     </div>
   </div>
 
   <div class="overlay hidden" id="accountOverlay" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
     <div class="dialog">
-      <div class="dialog-head"><h2 id="accountTitle">Your Library</h2><button class="close-button" data-close-account aria-label="Close">×</button></div>
+      <div class="dialog-head">
+        <h2 id="accountTitle">Your Library</h2>
+        <button class="close-button" data-close-account aria-label="Close">×</button>
+      </div>
       <p class="muted">This demo keeps playlists and favorites in this browser. Sign-in and cloud sync need a secure account backend.</p>
       <button class="outline-button full-button" id="openFavorites">Open My Favorites</button>
       <button class="outline-button full-button" id="openLibrary">Open Library</button>
@@ -114,22 +183,47 @@
   </div>
 
   <aside class="mini-player hidden" id="miniPlayer">
-    <div class="mini-art">♪</div><div class="mini-meta"><strong id="miniTitle">Tzomah Nafshi</strong><span id="miniArtist">Avraham Fried</span></div>
+    <div class="mini-art">♪</div>
+    <div class="mini-meta">
+      <strong id="miniTitle">Tzomah Nafshi</strong>
+      <span id="miniArtist">Avraham Fried</span>
+    </div>
     <button class="player-control" id="miniPrev" aria-label="Previous song">‹</button>
     <button class="play-button" id="miniPlay" aria-label="Play or pause">▶</button>
     <button class="player-control" id="miniNext" aria-label="Next song">›</button>
     <button class="player-control" id="playerExpand" aria-label="Expand player">⤢</button>
   </aside>
+
   <div class="overlay player-overlay hidden" id="fullPlayer">
     <div class="full-player">
-      <div class="dialog-head"><button class="back-button" id="minimizePlayer">⌄ Minimize</button><span class="eyebrow">NOW PLAYING</span><button class="close-button" id="closeFullPlayer">×</button></div>
-      <div class="big-art"><span>♪</span></div><h2 id="fullTitle">Tzomah Nafshi</h2><p class="muted" id="fullArtist">Avraham Fried</p>
-      <div class="progress-wrap"><input type="range" min="0" max="100" value="0" id="progress"><div class="time-row"><span id="elapsed">0:00</span><span id="duration">0:00</span></div></div>
-      <div class="full-controls"><button class="player-control" id="fullPrev">‹</button><button class="play-button large" id="fullPlay">▶</button><button class="player-control" id="fullNext">›</button></div>
+      <div class="dialog-head">
+        <button class="back-button" id="minimizePlayer">⌄ Minimize</button>
+        <span class="eyebrow">NOW PLAYING</span>
+        <button class="close-button" id="closeFullPlayer">×</button>
+      </div>
+      <div class="big-art"><span>♪</span></div>
+      <h2 id="fullTitle">Tzomah Nafshi</h2>
+      <p class="muted" id="fullArtist">Avraham Fried</p>
+      <div class="progress-wrap">
+        <input type="range" min="0" max="100" value="0" id="progress">
+        <div class="time-row">
+          <span id="elapsed">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+      <div class="full-controls">
+        <button class="player-control" id="fullPrev">‹</button>
+        <button class="play-button large" id="fullPlay">▶</button>
+        <button class="player-control" id="fullNext">›</button>
+      </div>
       <button class="outline-button" id="fullFavorite">♡ Favorite</button>
-      <details class="lyrics"><summary>Lyrics</summary><p class="muted">Lyrics can be added by an administrator when available.</p></details>
+      <details class="lyrics">
+        <summary>Lyrics</summary>
+        <p class="muted">Lyrics can be added by an administrator when available.</p>
+      </details>
     </div>
   </div>
+
   <div class="toast hidden" id="toast" role="status"></div>
   <script src="app.js"></script>
 </body>
