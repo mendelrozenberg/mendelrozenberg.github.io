@@ -46,18 +46,25 @@
 
 <main id="home">
 
-  <!-- FEATURED NIGGUN OF THE WEEK: replaces the unrequested banner -->
-  <section class="featured-niggun" aria-labelledby="featuredNiggunHeading">
-    <div class="featured-copy">
-      <div class="featured-kicker">NIGGUN OF THE WEEK</div>
-      <h1 id="featuredNiggunHeading">Niggun of the Week</h1>
-      <p id="featuredNiggunMeta">A featured Chabad niggun</p>
-      <div class="featured-actions">
-        <button class="primary" id="playFeaturedNiggun" type="button">▶ Play Niggun</button>
-        <button class="secondary" id="featuredAddPlaylist" type="button">＋ Add to Playlist</button>
-      </div>
+  <section class="intro">
+    <div class="intro-kicker"><span class="kicker-dot"></span> THE HOME OF CHABAD NIGGUNIM</div>
+    <h1>Listen. Sing. Connect.</h1>
+    <p>Chabad niggunim, singers, composers and playlists.</p>
+  </section>
+
+  <!-- WEEKLY -->
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Niggunim of the Week</h2>
+      <button
+        class="see-all"
+        data-section="Niggunim of the Week"
+        type="button"
+      >See All</button>
     </div>
-    <div class="featured-art" id="featuredNiggunArt" aria-hidden="true">♪</div>
+
+    <div class="horizontal" id="weeklySongs"></div>
   </section>
 
   <!-- COMPOSERS -->
